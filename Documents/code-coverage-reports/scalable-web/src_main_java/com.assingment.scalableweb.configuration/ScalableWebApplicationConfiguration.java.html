@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ScalableWebApplicationConfiguration.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 11:08:33 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.configuration</a> &gt; <span class="el_source">ScalableWebApplicationConfiguration.java</span></div><h1>ScalableWebApplicationConfiguration.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import springfox.documentation.service.Tag;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@Configuration
+@EnableSwagger2
+<span class="fc" id="L17">public class ScalableWebApplicationConfiguration {</span>
+
+	/**
+	 * Creates a {@code Docket} object for Swagger 2
+	 * @return
+	 */
+	@Bean
+    public Docket api() { 
+<span class="fc" id="L25">        return new Docket(DocumentationType.SWAGGER_2)  </span>
+<span class="fc" id="L26">          .select()                                  </span>
+<span class="fc" id="L27">          .apis(RequestHandlerSelectors.basePackage(&quot;com.assingment.scalableweb&quot;))              </span>
+<span class="fc" id="L28">          .paths(PathSelectors.any())                          </span>
+<span class="fc" id="L29">          .build()</span>
+<span class="fc" id="L30">          .apiInfo(metaData())</span>
+<span class="fc" id="L31">          .tags(new Tag(&quot;DifferenceController&quot;, &quot;Operations related to the Json Data&quot;)</span>
+        		  );                                           
+    }
+	
+    private ApiInfo metaData() {
+<span class="fc" id="L36">        return new ApiInfo(</span>
+<span class="fc" id="L37">                &quot;Scalable Web&quot;,</span>
+<span class="fc" id="L38">                &quot;Scalable Web for comparing 2 JSON in Base64 format&quot;,</span>
+<span class="fc" id="L39">                &quot;1.0&quot;,</span>
+<span class="fc" id="L40">                &quot;Terms of service&quot;,</span>
+<span class="fc" id="L41">                new Contact(&quot;Saurabh Oza&quot;, &quot;https://onlyfullstack.blogspot.com/p/about-me_21.html&quot;,</span>
+<span class="fc" id="L42">                		&quot;saurabh.s.oza@gmail.com&quot;),</span>
+<span class="fc" id="L43">               &quot;Apache License Version 2.0&quot;,</span>
+<span class="fc" id="L44">                &quot;https://www.apache.org/licenses/LICENSE-2.0&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 11:08:33 PM)</div></body></html>

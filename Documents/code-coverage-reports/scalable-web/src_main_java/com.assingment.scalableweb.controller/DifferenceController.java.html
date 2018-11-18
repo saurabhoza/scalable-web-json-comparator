@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DifferenceController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 9:09:08 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.controller</a> &gt; <span class="el_source">DifferenceController.java</span></div><h1>DifferenceController.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DifferenceController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 11:08:33 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.controller</a> &gt; <span class="el_source">DifferenceController.java</span></div><h1>DifferenceController.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.controller;
 
 import javax.validation.Valid;
 
@@ -19,6 +19,14 @@ import com.assingment.scalableweb.datatransferobject.JsonRequestDTO;
 import com.assingment.scalableweb.datatransferobject.JsonResponseDTO;
 import com.assingment.scalableweb.enums.Side;
 import com.assingment.scalableweb.service.DifferenceService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 /**
  * 
@@ -30,11 +38,13 @@ import com.assingment.scalableweb.service.DifferenceService;
 
 @RestController
 @RequestMapping(&quot;/v1/diff/{id}&quot;)
-<span class="fc" id="L33">public class DifferenceController {</span>
+@Api(tags = { &quot;DifferenceController&quot; })
+<span class="fc" id="L42">public class DifferenceController {</span>
 
 	private static final String JSON_DATA_SAVED_SUCCESSFULY = &quot;Json Data on the %s side saved successfully&quot;;
+	private static final String SAMPLE_REQUEST = &quot;{\&quot;data\&quot;:\&quot;dGVzdGluZyB0aGUgYmFzZTY0\&quot;}&quot;;
 
-<span class="fc" id="L37">	private static final Logger LOGGER = LoggerFactory.getLogger(DifferenceController.class);</span>
+<span class="fc" id="L47">	private static final Logger LOGGER = LoggerFactory.getLogger(DifferenceController.class);</span>
 
 	@Autowired
 	private DifferenceService service;
@@ -50,11 +60,16 @@ import com.assingment.scalableweb.service.DifferenceService;
 	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
 	 *         and {@code HttpStatus}
 	 */
+
+	@ApiOperation(value = &quot;Stores the left side of JsonData in the JSON base64 format&quot;, response = JsonResponseDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = &quot;The left side of JsonData is successfully stored into repository.&quot;),
+			@ApiResponse(code = 400, message = &quot;Invalid input is passed&quot;), })
 	@PostMapping(value = &quot;/left&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity&lt;JsonResponseDTO&gt; createLeftSide(@PathVariable Long id,
+	public ResponseEntity&lt;JsonResponseDTO&gt; createLeftSide(@PathVariable Long id,
 			@Valid @RequestBody JsonRequestDTO request) {
-<span class="fc" id="L56">		LOGGER.debug(&quot;Entering createLeftSide(id={}, request={})&quot;, id, request);</span>
-<span class="fc" id="L57">		return createJsonData(id, request, Side.LEFT);</span>
+<span class="fc" id="L71">		LOGGER.debug(&quot;Entering createLeftSide(id={}, request={})&quot;, id, request);</span>
+<span class="fc" id="L72">		return createJsonData(id, request, Side.LEFT);</span>
 	}
 
 	/**
@@ -68,11 +83,15 @@ import com.assingment.scalableweb.service.DifferenceService;
 	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
 	 *         and {@code HttpStatus}
 	 */
+	@ApiOperation(value = &quot;Stores the right side of JsonData in the JSON base64 format&quot;, response = JsonResponseDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = &quot;The right side of JsonData is successfully stored into repository.&quot;),
+			@ApiResponse(code = 400, message = &quot;Invalid input is passed&quot;), })
 	@PostMapping(value = &quot;/right&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity&lt;JsonResponseDTO&gt; createRightSide(@PathVariable Long id,
+	public ResponseEntity&lt;JsonResponseDTO&gt; createRightSide(@PathVariable Long id,
 			@Valid @RequestBody JsonRequestDTO request) {
-<span class="fc" id="L74">		LOGGER.debug(&quot;Entering createRightSide(id={}, request={})&quot;, id, request);</span>
-<span class="fc" id="L75">		return createJsonData(id, request, Side.RIGHT);</span>
+<span class="fc" id="L93">		LOGGER.debug(&quot;Entering createRightSide(id={}, request={})&quot;, id, request);</span>
+<span class="fc" id="L94">		return createJsonData(id, request, Side.RIGHT);</span>
 	}
 
 	/**
@@ -83,9 +102,13 @@ import com.assingment.scalableweb.service.DifferenceService;
 	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
 	 *         and {@code HttpStatus}
 	 */
+	@ApiOperation(value = &quot;Compares the left and right side of JsonData in the JSON base64 format&quot;, response = JsonResponseDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = &quot;Compared the left and right side of the JsonaData Successfully.&quot;),
+			@ApiResponse(code = 404, message = &quot;Record not found in repository&quot;), })
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity&lt;JsonResponseDTO&gt; getDifference(@PathVariable Long id) {
-<span class="fc" id="L88">		return new ResponseEntity&lt;&gt;(service.getDifference(id), HttpStatus.OK);</span>
+	public ResponseEntity&lt;JsonResponseDTO&gt; getDifference(@PathVariable @ApiParam(defaultValue = &quot;1&quot;) Long id) {
+<span class="fc" id="L111">		return new ResponseEntity&lt;&gt;(service.getDifference(id), HttpStatus.OK);</span>
 	}
 
 	/**
@@ -102,14 +125,14 @@ import com.assingment.scalableweb.service.DifferenceService;
 	 *         and {@code HttpStatus}
 	 */
 	private ResponseEntity&lt;JsonResponseDTO&gt; createJsonData(Long id, JsonRequestDTO request, Side side) {
-<span class="fc" id="L105">		LOGGER.debug(&quot;Entering createJsonData(id={}, request={}, side={})&quot;, id, request, side);</span>
-<span class="fc" id="L106">		service.save(id, request.getData(), side);</span>
+<span class="fc" id="L128">		LOGGER.debug(&quot;Entering createJsonData(id={}, request={}, side={})&quot;, id, request, side);</span>
+<span class="fc" id="L129">		service.save(id, request.getData(), side);</span>
 
-<span class="fc" id="L108">		LOGGER.info(&quot;'{}' side of the createJsonData saved successfuly with id :'{}'&quot;, side, id);</span>
-<span class="fc" id="L109">		JsonResponseDTO response = new JsonResponseDTO(getSuccessResponse(side));</span>
+<span class="fc" id="L131">		LOGGER.info(&quot;'{}' side of the createJsonData saved successfuly with id :'{}'&quot;, side, id);</span>
+<span class="fc" id="L132">		JsonResponseDTO response = new JsonResponseDTO(getSuccessResponse(side));</span>
 
-<span class="fc" id="L111">		LOGGER.debug(&quot;Exiting createJsonData with response : {}&quot;, response);</span>
-<span class="fc" id="L112">		return new ResponseEntity&lt;&gt;(response, HttpStatus.CREATED);</span>
+<span class="fc" id="L134">		LOGGER.debug(&quot;Exiting createJsonData with response : {}&quot;, response);</span>
+<span class="fc" id="L135">		return new ResponseEntity&lt;&gt;(response, HttpStatus.CREATED);</span>
 	}
 
 	/**
@@ -120,7 +143,7 @@ import com.assingment.scalableweb.service.DifferenceService;
 	 * @return formatted success message in String
 	 */
 	public static String getSuccessResponse(Side side) {
-<span class="fc" id="L123">		return String.format(JSON_DATA_SAVED_SUCCESSFULY, side.toString());</span>
+<span class="fc" id="L146">		return String.format(JSON_DATA_SAVED_SUCCESSFULY, side.toString());</span>
 	}
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 9:09:08 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 11:08:33 PM)</div></body></html>
