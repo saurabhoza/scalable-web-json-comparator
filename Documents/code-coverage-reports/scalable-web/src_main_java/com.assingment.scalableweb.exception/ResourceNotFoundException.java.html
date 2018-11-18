@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ResourceNotFoundException.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 7:37:10 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.exception</a> &gt; <span class="el_source">ResourceNotFoundException.java</span></div><h1>ResourceNotFoundException.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.exception;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ResourceNotFoundException.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 9:09:08 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.exception</a> &gt; <span class="el_source">ResourceNotFoundException.java</span></div><h1>ResourceNotFoundException.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Resource not found exception.
- * Mostly used for not exist id in repository
+ * Exception occurs when the {@code JsonDataDO} data is not found in the repository for id 
  *
  *@author &lt;a href=&quot;mailto:saurabh.s.oza@gmail.com&quot;&gt;Saurabh Oza&lt;/a&gt;.
  */
@@ -16,16 +15,16 @@ public class ResourceNotFoundException extends RuntimeException {
     private static final String RESOURCE_NOT_FOUND= &quot;JsonData with id : %d not found&quot;;
 
     public ResourceNotFoundException(String message) {
-<span class="fc" id="L19">        super(message);</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L18">        super(message);</span>
+<span class="fc" id="L19">    }</span>
 
     public static ResourceNotFoundException build(Long id) {
-<span class="fc" id="L23">        return new ResourceNotFoundException(getResourceNotFoundMessage(id));</span>
+<span class="fc" id="L22">        return new ResourceNotFoundException(getResourceNotFoundMessage(id));</span>
 
     }
 
 	public static String getResourceNotFoundMessage(Long id) {
-<span class="fc" id="L28">		return String.format(RESOURCE_NOT_FOUND, id);</span>
+<span class="fc" id="L27">		return String.format(RESOURCE_NOT_FOUND, id);</span>
 	}
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 7:37:10 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 9:09:08 PM)</div></body></html>

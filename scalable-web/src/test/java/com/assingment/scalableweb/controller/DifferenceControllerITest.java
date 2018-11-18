@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -33,6 +32,11 @@ import com.assingment.scalableweb.repository.JsonDataRepository;
 import com.assingment.scalableweb.service.DifferenceService;
 import com.assingment.scalableweb.util.TestUtil;
 
+/**
+ * This class contains the integration test cases of {@code DifferenceController}
+ * 
+ * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -62,22 +66,7 @@ public class DifferenceControllerITest {
 	@Test
 	public void insertEqualJsonStrings() throws Exception {
 		insertLeftSide_withValidJsonString();
-		insertRightSide();
-	}
-	
-	private void insertLeftSide_withValidJsonString() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/v1/diff/1/left")
-				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestUtil.convertObjectToJsonBytes(validJsonRequest)))
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.message", is(DifferenceController.getSuccessResponse(Side.LEFT))))
-				.andReturn();
-		
-		JsonDataDO jsonData = repository.findById(1L).orElse(null);
-		assertThat(jsonData.getId(), Matchers.is(1L));
-		assertThat(jsonData.getLeft(), Matchers.is(JSON_BASE64));
-		assertThat(jsonData.getRight(), Matchers.isEmptyOrNullString());
+		insertRightSide_withValidJsonString();
 	}
 	
 	@Test
@@ -110,40 +99,12 @@ public class DifferenceControllerITest {
 		insertInvalidJsonString("/right", new JsonRequestDTO("ffdff...&**"), "Input String is not in a valid Base 64 JSON format.");
 	}
 	
-	private void insertInvalidJsonString(String side, JsonRequestDTO request, String errorMessage) throws Exception, IOException {
-		mvc.perform(MockMvcRequestBuilders.post("/v1/diff/1"+side)
-				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestUtil.convertObjectToJsonBytes(request)))
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.title", is("Constraints Validation Failed")))
-				.andExpect(jsonPath("$.details", is(errorMessage)))
-				.andReturn();
-		
-		JsonDataDO jsonData = repository.findById(1L).orElse(null);
-		assertThat(jsonData, is(nullValue()));
-	}
-	
-	private void insertRightSide() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/v1/diff/1/right").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestUtil.convertObjectToJsonBytes(validJsonRequest)))
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.message", is(DifferenceController.getSuccessResponse(Side.RIGHT))))
-				.andReturn();
-		
-		JsonDataDO jsonData = repository.findById(1L).orElse(null);
-		assertThat(jsonData.getId(), Matchers.is(1L));
-		assertThat(jsonData.getRight(), Matchers.is(JSON_BASE64));
-		assertThat(jsonData.getLeft(), Matchers.is(JSON_BASE64));
-	}
-	
 	@Test
 	public void checkDifference_withEqualJsonStrings() throws Exception {
 		repository.save(new JsonDataDO(1l, JSON_BASE64, JSON_BASE64));
 		mvc.perform(MockMvcRequestBuilders.get("/v1/diff/1"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.message", is(DifferenceService.EQUAL_JSON)))
+			.andExpect(jsonPath("$.message", is(DifferenceService.EQUAL_JSON_SUCCESS_MESSAGE)))
 			.andReturn();		
 	}
 	
@@ -152,7 +113,7 @@ public class DifferenceControllerITest {
 		repository.save(new JsonDataDO(1l, JSON_BASE64, "dGhlIDJuZCB0ZXN0IGZvciBjb21wYXJpbmc="));
 		mvc.perform(MockMvcRequestBuilders.get("/v1/diff/1"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.message", is(DifferenceService.EQUAL_JSON_WITH_DIFF_SIZE)))
+			.andExpect(jsonPath("$.message", is(DifferenceService.EQUAL_JSON_WITH_DIFFERENT_SIZE)))
 			.andReturn();		
 	}
 	
@@ -164,7 +125,6 @@ public class DifferenceControllerITest {
 			.andExpect(jsonPath("$.message", is(String.format(DifferenceService.DIFFERENT_OFFSET, "1 3"))))
 			.andReturn();		
 	}
-	
 	
 	@Test
 	public void checkDifference_withOnlyLeftSideOfJsonData() throws Exception {
@@ -206,5 +166,48 @@ public class DifferenceControllerITest {
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.title", is("Message Not Readable")))
 				.andReturn();
+	}
+	
+	private void insertLeftSide_withValidJsonString() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post("/v1/diff/1/left")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestUtil.convertObjectToJsonBytes(validJsonRequest)))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.message", is(DifferenceController.getSuccessResponse(Side.LEFT))))
+				.andReturn();
+		
+		JsonDataDO jsonData = repository.findById(1L).orElse(null);
+		assertThat(jsonData.getId(), Matchers.is(1L));
+		assertThat(jsonData.getLeft(), Matchers.is(JSON_BASE64));
+		assertThat(jsonData.getRight(), Matchers.isEmptyOrNullString());
+	}
+	
+	private void insertRightSide_withValidJsonString() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post("/v1/diff/1/right").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestUtil.convertObjectToJsonBytes(validJsonRequest)))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.message", is(DifferenceController.getSuccessResponse(Side.RIGHT))))
+				.andReturn();
+		
+		JsonDataDO jsonData = repository.findById(1L).orElse(null);
+		assertThat(jsonData.getId(), Matchers.is(1L));
+		assertThat(jsonData.getRight(), Matchers.is(JSON_BASE64));
+		assertThat(jsonData.getLeft(), Matchers.is(JSON_BASE64));
+	}
+	
+	private void insertInvalidJsonString(String side, JsonRequestDTO request, String errorMessage) throws Exception, IOException {
+		mvc.perform(MockMvcRequestBuilders.post("/v1/diff/1"+side)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestUtil.convertObjectToJsonBytes(request)))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.title", is("Constraints Validation Failed")))
+				.andExpect(jsonPath("$.details", is(errorMessage)))
+				.andReturn();
+		
+		JsonDataDO jsonData = repository.findById(1L).orElse(null);
+		assertThat(jsonData, is(nullValue()));
 	}
 }

@@ -3,8 +3,6 @@ package com.assingment.scalableweb.service;
 import java.util.Arrays;
 import java.util.StringJoiner;
 
-import javax.xml.bind.ValidationException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,77 +16,78 @@ import com.assingment.scalableweb.exception.MissingJsonDataException;
 import com.assingment.scalableweb.exception.ResourceNotFoundException;
 import com.assingment.scalableweb.repository.JsonDataRepository;
 
+/**
+ * Handles all the business layer logic of storing, updating and comparing the
+ * {@code JsonDataDO} entity.
+ * 
+ * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.ss
+ */
 @Service
 public class DifferenceService {
 
 	public static final String DIFFERENT_OFFSET = "Left and Right side have same size, but their offsets are different at index : %s";
-
-	public static final String EQUAL_JSON_WITH_DIFF_SIZE = "Left and Right side of Json data does not have same size.";
-
-	public static final String EQUAL_JSON = "Left and Right side of Json data is equal.";
+	public static final String EQUAL_JSON_WITH_DIFFERENT_SIZE = "Left and Right side of Json data does not have same size.";
+	public static final String EQUAL_JSON_SUCCESS_MESSAGE = "Left and Right side of Json data is equal.";
 
 	@Autowired
 	public JsonDataRepository repository;
 
-	private static final Logger LOG = LoggerFactory.getLogger(DifferenceService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DifferenceService.class);
 
 	/**
 	 * 
-	 * Save the JSON base64 data into database
+	 * Saves the JSON base64 {@code JsonDataDO} data into repository
 	 *
 	 * @param id
-	 *            unique identifier of the JsonDat
+	 *            Unique identifier of {@code JsonDataDO}
 	 * @param data
 	 *            in JSON Base64 format
 	 * @param side
-	 *            holds the left or right side
-	 * @return the JsonDataDO stored into the database
-	 * @throws Exception
-	 *             JsonData
+	 *            holds the left or right side of {@code Side}
+	 * @return {@code JsonDataDO} stored into the repository
 	 */
 	public JsonDataDO save(Long id, String data, Side side) {
-		JsonDataDO document = null;
-		document = repository.findById(id).orElse(new JsonDataDO(id));
-		if (Side.LEFT.equals(side)) {
-			document.setLeft(data);
-		} else if (Side.RIGHT.equals(side)) {
-			document.setRight(data);
-		} else {
-			LOG.warn("Invalid side sent.");
+		LOGGER.debug("Entered in save(id={}, data={}, side={})", id, data, side);
+		JsonDataDO jsonData = repository.findById(id).orElse(new JsonDataDO(id));
+		if (Side.LEFT == side) {
+			jsonData.setLeft(data);
+		} else if (Side.RIGHT == side) {
+			jsonData.setRight(data);
 		}
-		document = repository.save(document);
-		return document;
+		jsonData = repository.save(jsonData);
+		LOGGER.debug("Exiting from save with saved object : {} ", jsonData);
+		return jsonData;
 	}
 
 	/**
-	 * Do the core validation in order to compare Jsons and return its results
+	 * Compares the left and right sides of {@code JsonDataDO} Jsons and return
+	 * its results as {@code JsonResponseDTO}
 	 * 
 	 * @param id
-	 *            is used by repository to find a object
-	 * @return a string with comparison results
+	 *            Unique identifier of {@code JsonDataDO}
+	 * @return a difference information in {@code JsonResponseDTO}
 	 */
 	public JsonResponseDTO getDifference(Long id) {
-		LOG.debug("Entering getDifference(id={})", id);
+		LOGGER.debug("Entered in getDifference(id={})", id);
 		JsonResponseDTO response = new JsonResponseDTO();
-		JsonDataDO jsonData = repository.findById(id)
-				.orElseThrow(() -> ResourceNotFoundException.build(id));
+		JsonDataDO jsonData = repository.findById(id).orElseThrow(() -> ResourceNotFoundException.build(id));
 
-		LOG.debug("JsonData found. Will check the base64 data on both sides for id '{}'", id);
-		
+		LOGGER.debug("JsonData found. Will check the base64 data on both sides for id '{}'", id);
+
 		if (StringUtils.isEmpty(jsonData.getLeft()) || StringUtils.isEmpty(jsonData.getRight())) {
 			Side side = StringUtils.isEmpty(jsonData.getLeft()) ? Side.LEFT : Side.RIGHT;
 			throw MissingJsonDataException.build(id, side);
 		}
-		
+
 		byte[] bytesLeft = jsonData.getLeft().getBytes();
 		byte[] bytesRight = jsonData.getRight().getBytes();
 
 		boolean blnResult = Arrays.equals(bytesLeft, bytesRight);
 
 		if (blnResult) {
-			response.setMessage(EQUAL_JSON);
+			response.setMessage(EQUAL_JSON_SUCCESS_MESSAGE);
 		} else if (bytesLeft.length != bytesRight.length) {
-			response.setMessage(EQUAL_JSON_WITH_DIFF_SIZE);
+			response.setMessage(EQUAL_JSON_WITH_DIFFERENT_SIZE);
 		} else {
 			StringJoiner offsets = new StringJoiner(" ");
 			byte different = 0;

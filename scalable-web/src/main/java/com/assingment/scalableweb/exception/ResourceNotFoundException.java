@@ -4,8 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Resource not found exception.
- * Mostly used for not exist id in repository
+ * Exception occurs when the {@code JsonDataDO} data is not found in the repository for id 
  *
  *@author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
  */

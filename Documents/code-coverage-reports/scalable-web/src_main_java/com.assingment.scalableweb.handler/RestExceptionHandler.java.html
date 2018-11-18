@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RestExceptionHandler.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 7:37:10 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.handler</a> &gt; <span class="el_source">RestExceptionHandler.java</span></div><h1>RestExceptionHandler.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.handler;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RestExceptionHandler.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 9:09:08 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.handler</a> &gt; <span class="el_source">RestExceptionHandler.java</span></div><h1>RestExceptionHandler.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.handler;
 
 import java.util.Date;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,120 +22,130 @@ import com.assingment.scalableweb.exception.MissingJsonDataException;
 import com.assingment.scalableweb.exception.ResourceNotFoundException;
 
 /**
+ * Handles the Exception and converts to {@code ErrorDetail} format.
+ * 
+ * This is a convenient base class for
+ * {@link ControllerAdvice @ControllerAdvice} classes that provides a
+ * centralized exception handling across all {@code @RequestMapping} methods
+ * through {@code @ExceptionHandler} methods and coverts them into
+ * {@code ErrorDetail} format.
+ *
  * @author &lt;a href=&quot;mailto:saurabh.s.oza@gmail.com&quot;&gt;Saurabh Oza&lt;/a&gt;.
  */
 
 @ControllerAdvice
-<span class="fc" id="L28">public class RestExceptionHandler extends ResponseEntityExceptionHandler {</span>
+<span class="fc" id="L37">public class RestExceptionHandler extends ResponseEntityExceptionHandler {</span>
 
-    private static final String RESOURCE_NOT_FOUND = &quot;Resource Not Found&quot;;
+	private static final String RESOURCE_NOT_FOUND = &quot;Resource Not Found&quot;;
 	private static final String MESSAGE_NOT_READABLE = &quot;Message Not Readable&quot;;
 	private static final String CONSTRAINTS_VALIDATION_FAILED = &quot;Constraints Validation Failed&quot;;
 
 	/**
-     * Handle ResourceNotFoundException
-     * @param rnfe
-     * @param request
-     * @return
-     */
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity&lt;?&gt; handleResourceNotFoundException(ResourceNotFoundException rnfe, HttpServletRequest request) {
+	 * Customize the {@code ResourceNotFoundException} response into
+	 * {@code ErrorDetail}
+	 * 
+	 * @param rnfe
+	 *            the exception
+	 * @param request
+	 *            the current request
+	 * @return @return a {@code ResponseEntity} instance with
+	 *         {@code ErrorDetail} and {@code HttpStatus}
+	 */
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity&lt;ErrorDetail&gt; handleResourceNotFoundException(ResourceNotFoundException rnfe,
+			HttpServletRequest request) {
 
-<span class="fc" id="L43">        logger.debug(&quot;ResourceNotFoundException is handled&quot;);</span>
-<span class="fc" id="L44">        ErrorDetail errorDetail = new ErrorDetail();</span>
-<span class="fc" id="L45">        errorDetail.setTimeStamp(new Date().getTime());</span>
-<span class="fc" id="L46">        errorDetail.setStatus(HttpStatus.NOT_FOUND.value());</span>
-<span class="fc" id="L47">        errorDetail.setTitle(RESOURCE_NOT_FOUND);</span>
-<span class="fc" id="L48">        errorDetail.setDetails(rnfe.getMessage());</span>
+<span class="fc" id="L58">		logger.error(&quot;ResourceNotFoundException is handled with error cause : {}&quot;, rnfe.getCause());</span>
+<span class="fc" id="L59">		ErrorDetail errorDetail = new ErrorDetail();</span>
+<span class="fc" id="L60">		errorDetail.setTimeStamp(new Date().getTime());</span>
+<span class="fc" id="L61">		errorDetail.setStatus(HttpStatus.NOT_FOUND.value());</span>
+<span class="fc" id="L62">		errorDetail.setTitle(RESOURCE_NOT_FOUND);</span>
+<span class="fc" id="L63">		errorDetail.setDetails(rnfe.getMessage());</span>
 
-<span class="fc" id="L50">        return new ResponseEntity&lt;&gt;(errorDetail, null, HttpStatus.NOT_FOUND);</span>
-    }
-
-    /**
-     * Handle MissingJsonDataException
-     * @param mbde
-     * @param request
-     * @return
-     */
-    @ExceptionHandler(MissingJsonDataException.class)
-    public ResponseEntity&lt;?&gt; handleMissingBinaryDataException(MissingJsonDataException mbde, HttpServletRequest request) {
-<span class="fc" id="L61">        logger.debug(&quot;MissingJsonDataException is handled&quot;);</span>
-<span class="fc" id="L62">        ErrorDetail errorDetail = new ErrorDetail();</span>
-<span class="fc" id="L63">        errorDetail.setTimeStamp(new Date().getTime());</span>
-<span class="fc" id="L64">        errorDetail.setStatus(HttpStatus.NOT_FOUND.value());</span>
-<span class="fc" id="L65">        errorDetail.setTitle(&quot;Missing Data&quot;);</span>
-<span class="fc" id="L66">        errorDetail.setDetails(mbde.getMessage());</span>
-
-<span class="fc" id="L68">        return new ResponseEntity&lt;&gt;(errorDetail, null, HttpStatus.NOT_FOUND);</span>
-    }
-
-
-
-
-    /**
-     * Handle IllegalArgumentException
-     * @param ile
-     * @param request
-     * @return
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity&lt;?&gt; handleIllegalArgumentException(IllegalArgumentException ile, HttpServletRequest request) {
-<span class="nc" id="L82">        logger.debug(&quot;IllegalArgumentException is handled&quot;);</span>
-<span class="nc" id="L83">        ErrorDetail errorDetail = new ErrorDetail();</span>
-<span class="nc" id="L84">        errorDetail.setTimeStamp(new Date().getTime());</span>
-<span class="nc" id="L85">        errorDetail.setStatus(HttpStatus.NOT_FOUND.value());</span>
-<span class="nc" id="L86">        errorDetail.setTitle(&quot;Binary Data Missing&quot;);</span>
-<span class="nc" id="L87">        errorDetail.setDetails(ile.getMessage());</span>
-
-<span class="nc" id="L89">        return new ResponseEntity&lt;&gt;(errorDetail, null, HttpStatus.NOT_FOUND);</span>
-    }
-
-    /**
-     * Handle MethodArgumentNotValidException
-     * @param manve
-     * @param headers
-     * @param status
-     * @param request
-     * @return
-     */
-    @Override
-    public ResponseEntity&lt;Object&gt; handleMethodArgumentNotValid(MethodArgumentNotValidException manve, HttpHeaders headers, HttpStatus status, WebRequest request) {
-<span class="fc" id="L102">        logger.debug(&quot;MethodArgumentNotValidException is handled&quot;);</span>
-<span class="fc" id="L103">        ErrorDetail errorDetail = new ErrorDetail();</span>
-<span class="fc" id="L104">        errorDetail.setTimeStamp(new Date().getTime());</span>
-<span class="fc" id="L105">        errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());</span>
-<span class="fc" id="L106">        errorDetail.setTitle(CONSTRAINTS_VALIDATION_FAILED);</span>
-<span class="fc" id="L107">        errorDetail.setDetails(getErrorMessagesFromException(manve));</span>
-
-<span class="fc" id="L109">        return handleExceptionInternal(manve, errorDetail, headers, status, request);</span>
-    }
-
-    private String getErrorMessagesFromException(MethodArgumentNotValidException manve) {
-<span class="fc" id="L113">		return manve.getBindingResult().getAllErrors().stream()</span>
-<span class="fc" id="L114">				.map(error -&gt; error.getDefaultMessage())</span>
-<span class="fc" id="L115">				.collect(Collectors.joining(&quot;, &quot;));</span>
+<span class="fc" id="L65">		return new ResponseEntity&lt;&gt;(errorDetail, null, HttpStatus.NOT_FOUND);</span>
 	}
 
 	/**
-     * Handle HttpMessageNotReadableException
-     * @param ex
-     * @param headers
-     * @param status
-     * @param request
-     * @return
-     */
-    @Override
-    protected ResponseEntity&lt;Object&gt; handleHttpMessageNotReadable(
-            HttpMessageNotReadableException ex, HttpHeaders headers,
-            HttpStatus status, WebRequest request) {
-<span class="fc" id="L130">        logger.debug(&quot;HttpMessageNotReadableException is handled&quot;);</span>
-<span class="fc" id="L131">        ErrorDetail errorDetail = new ErrorDetail();</span>
-<span class="fc" id="L132">        errorDetail.setTimeStamp(new Date().getTime());</span>
-<span class="fc" id="L133">        errorDetail.setStatus(status.value());</span>
-<span class="fc" id="L134">        errorDetail.setTitle(MESSAGE_NOT_READABLE);</span>
-<span class="fc" id="L135">        errorDetail.setDetails(ex.getMessage());</span>
-<span class="fc" id="L136">        return handleExceptionInternal(ex, errorDetail, headers, status, request);</span>
-    }
+	 * Customize the {@code MissingJsonDataException} response into
+	 * {@code ErrorDetail}
+	 * 
+	 * @param mbde
+	 *            the exception
+	 * @param request
+	 *            the current request
+	 * @return a {@code ResponseEntity} instance with {@code ErrorDetail} and
+	 *         {@code HttpStatus}
+	 */
+	@ExceptionHandler(MissingJsonDataException.class)
+	public ResponseEntity&lt;ErrorDetail&gt; handleMissingBinaryDataException(MissingJsonDataException mbde,
+			HttpServletRequest request) {
+<span class="fc" id="L82">		logger.error(&quot;MissingJsonDataException is handled with error cause : {}&quot;, mbde.getCause());</span>
+<span class="fc" id="L83">		ErrorDetail errorDetail = new ErrorDetail();</span>
+<span class="fc" id="L84">		errorDetail.setTimeStamp(new Date().getTime());</span>
+<span class="fc" id="L85">		errorDetail.setStatus(HttpStatus.NOT_FOUND.value());</span>
+<span class="fc" id="L86">		errorDetail.setTitle(&quot;Missing Data&quot;);</span>
+<span class="fc" id="L87">		errorDetail.setDetails(mbde.getMessage());</span>
 
+<span class="fc" id="L89">		return new ResponseEntity&lt;&gt;(errorDetail, null, HttpStatus.NOT_FOUND);</span>
+	}
+
+	/**
+	 * Customize the {@code MethodArgumentNotValidException} response into
+	 * {@code ErrorDetail}
+	 *
+	 * @param manve
+	 *            the exception
+	 * @param headers
+	 *            the headers to be written to the response
+	 * @param status
+	 *            the selected response status
+	 * @param request
+	 *            the current request
+	 * @return a {@code ResponseEntity} instance with {@code ErrorDetail} and
+	 *         {@code HttpStatus}
+	 */
+	@Override
+	public ResponseEntity&lt;Object&gt; handleMethodArgumentNotValid(MethodArgumentNotValidException manve,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+<span class="fc" id="L110">		logger.error(&quot;MethodArgumentNotValidException is handled with error cause : {}&quot;, manve.getCause());</span>
+<span class="fc" id="L111">		ErrorDetail errorDetail = new ErrorDetail();</span>
+<span class="fc" id="L112">		errorDetail.setTimeStamp(new Date().getTime());</span>
+<span class="fc" id="L113">		errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());</span>
+<span class="fc" id="L114">		errorDetail.setTitle(CONSTRAINTS_VALIDATION_FAILED);</span>
+<span class="fc" id="L115">		errorDetail.setDetails(getErrorMessagesFromException(manve));</span>
+
+<span class="fc" id="L117">		return handleExceptionInternal(manve, errorDetail, headers, status, request);</span>
+	}
+
+	/**
+	 * Customize the response for HttpMessageNotReadableException.
+	 * 
+	 * @param ex
+	 *            the exception
+	 * @param headers
+	 *            the headers to be written to the response
+	 * @param status
+	 *            the selected response status
+	 * @param request
+	 *            the current request
+	 * @return a {@code ResponseEntity} instance with {@code ErrorDetail} and
+	 *         {@code HttpStatus}
+	 */
+	@Override
+	protected ResponseEntity&lt;Object&gt; handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+<span class="fc" id="L137">		logger.error(&quot;HttpMessageNotReadableException is handled with error cause : {}&quot;, ex.getCause());</span>
+<span class="fc" id="L138">		ErrorDetail errorDetail = new ErrorDetail();</span>
+<span class="fc" id="L139">		errorDetail.setTimeStamp(new Date().getTime());</span>
+<span class="fc" id="L140">		errorDetail.setStatus(status.value());</span>
+<span class="fc" id="L141">		errorDetail.setTitle(MESSAGE_NOT_READABLE);</span>
+<span class="fc" id="L142">		errorDetail.setDetails(ex.getMessage());</span>
+<span class="fc" id="L143">		return handleExceptionInternal(ex, errorDetail, headers, status, request);</span>
+	}
+
+	private String getErrorMessagesFromException(MethodArgumentNotValidException manve) {
+<span class="fc" id="L147">		return manve.getBindingResult().getAllErrors().stream().map(error -&gt; error.getDefaultMessage())</span>
+<span class="fc" id="L148">				.collect(Collectors.joining(&quot;, &quot;));</span>
+	}
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 7:37:10 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 9:09:08 PM)</div></body></html>

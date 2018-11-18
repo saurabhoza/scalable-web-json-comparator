@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DifferenceService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 7:37:10 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.service</a> &gt; <span class="el_source">DifferenceService.java</span></div><h1>DifferenceService.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.service;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DifferenceService.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 9:09:08 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.service</a> &gt; <span class="el_source">DifferenceService.java</span></div><h1>DifferenceService.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.service;
 
 import java.util.Arrays;
 import java.util.StringJoiner;
-
-import javax.xml.bind.ValidationException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,89 +16,90 @@ import com.assingment.scalableweb.exception.MissingJsonDataException;
 import com.assingment.scalableweb.exception.ResourceNotFoundException;
 import com.assingment.scalableweb.repository.JsonDataRepository;
 
+/**
+ * Handles all the business layer logic of storing, updating and comparing the
+ * {@code JsonDataDO} entity.
+ * 
+ * @author &lt;a href=&quot;mailto:saurabh.s.oza@gmail.com&quot;&gt;Saurabh Oza&lt;/a&gt;.ss
+ */
 @Service
-<span class="fc" id="L22">public class DifferenceService {</span>
+<span class="fc" id="L26">public class DifferenceService {</span>
 
 	public static final String DIFFERENT_OFFSET = &quot;Left and Right side have same size, but their offsets are different at index : %s&quot;;
-
-	public static final String EQUAL_JSON_WITH_DIFF_SIZE = &quot;Left and Right side of Json data does not have same size.&quot;;
-
-	public static final String EQUAL_JSON = &quot;Left and Right side of Json data is equal.&quot;;
+	public static final String EQUAL_JSON_WITH_DIFFERENT_SIZE = &quot;Left and Right side of Json data does not have same size.&quot;;
+	public static final String EQUAL_JSON_SUCCESS_MESSAGE = &quot;Left and Right side of Json data is equal.&quot;;
 
 	@Autowired
 	public JsonDataRepository repository;
 
-<span class="fc" id="L33">	private static final Logger LOG = LoggerFactory.getLogger(DifferenceService.class);</span>
+<span class="fc" id="L35">	private static final Logger LOGGER = LoggerFactory.getLogger(DifferenceService.class);</span>
 
 	/**
 	 * 
-	 * Save the JSON base64 data into database
+	 * Saves the JSON base64 {@code JsonDataDO} data into repository
 	 *
 	 * @param id
-	 *            unique identifier of the JsonDat
+	 *            Unique identifier of {@code JsonDataDO}
 	 * @param data
 	 *            in JSON Base64 format
 	 * @param side
-	 *            holds the left or right side
-	 * @return the JsonDataDO stored into the database
-	 * @throws Exception
-	 *             JsonData
+	 *            holds the left or right side of {@code Side}
+	 * @return {@code JsonDataDO} stored into the repository
 	 */
 	public JsonDataDO save(Long id, String data, Side side) {
-<span class="fc" id="L50">		JsonDataDO document = null;</span>
-<span class="fc" id="L51">		document = repository.findById(id).orElse(new JsonDataDO(id));</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">		if (Side.LEFT.equals(side)) {</span>
-<span class="fc" id="L53">			document.setLeft(data);</span>
-<span class="pc bpc" id="L54" title="1 of 2 branches missed.">		} else if (Side.RIGHT.equals(side)) {</span>
-<span class="fc" id="L55">			document.setRight(data);</span>
-		} else {
-<span class="nc" id="L57">			LOG.warn(&quot;Invalid side sent.&quot;);</span>
+<span class="fc" id="L50">		LOGGER.debug(&quot;Entered in save(id={}, data={}, side={})&quot;, id, data, side);</span>
+<span class="fc" id="L51">		JsonDataDO jsonData = repository.findById(id).orElse(new JsonDataDO(id));</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">		if (Side.LEFT == side) {</span>
+<span class="fc" id="L53">			jsonData.setLeft(data);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">		} else if (Side.RIGHT == side) {</span>
+<span class="fc" id="L55">			jsonData.setRight(data);</span>
 		}
-<span class="fc" id="L59">		document = repository.save(document);</span>
-<span class="fc" id="L60">		return document;</span>
+<span class="fc" id="L57">		jsonData = repository.save(jsonData);</span>
+<span class="fc" id="L58">		LOGGER.debug(&quot;Exiting from save with saved object : {} &quot;, jsonData);</span>
+<span class="fc" id="L59">		return jsonData;</span>
 	}
 
 	/**
-	 * Do the core validation in order to compare Jsons and return its results
+	 * Compares the left and right sides of {@code JsonDataDO} Jsons and return
+	 * its results as {@code JsonResponseDTO}
 	 * 
 	 * @param id
-	 *            is used by repository to find a object
-	 * @return a string with comparison results
+	 *            Unique identifier of {@code JsonDataDO}
+	 * @return a difference information in {@code JsonResponseDTO}
 	 */
 	public JsonResponseDTO getDifference(Long id) {
-<span class="fc" id="L71">		LOG.debug(&quot;Entering getDifference(id={})&quot;, id);</span>
+<span class="fc" id="L71">		LOGGER.debug(&quot;Entered in getDifference(id={})&quot;, id);</span>
 <span class="fc" id="L72">		JsonResponseDTO response = new JsonResponseDTO();</span>
-<span class="fc" id="L73">		JsonDataDO jsonData = repository.findById(id)</span>
-<span class="fc" id="L74">				.orElseThrow(() -&gt; ResourceNotFoundException.build(id));</span>
+<span class="fc" id="L73">		JsonDataDO jsonData = repository.findById(id).orElseThrow(() -&gt; ResourceNotFoundException.build(id));</span>
 
-<span class="fc" id="L76">		LOG.debug(&quot;JsonData found. Will check the base64 data on both sides for id '{}'&quot;, id);</span>
-		
-<span class="fc bfc" id="L78" title="All 4 branches covered.">		if (StringUtils.isEmpty(jsonData.getLeft()) || StringUtils.isEmpty(jsonData.getRight())) {</span>
-<span class="fc bfc" id="L79" title="All 2 branches covered.">			Side side = StringUtils.isEmpty(jsonData.getLeft()) ? Side.LEFT : Side.RIGHT;</span>
-<span class="fc" id="L80">			throw MissingJsonDataException.build(id, side);</span>
+<span class="fc" id="L75">		LOGGER.debug(&quot;JsonData found. Will check the base64 data on both sides for id '{}'&quot;, id);</span>
+
+<span class="fc bfc" id="L77" title="All 4 branches covered.">		if (StringUtils.isEmpty(jsonData.getLeft()) || StringUtils.isEmpty(jsonData.getRight())) {</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">			Side side = StringUtils.isEmpty(jsonData.getLeft()) ? Side.LEFT : Side.RIGHT;</span>
+<span class="fc" id="L79">			throw MissingJsonDataException.build(id, side);</span>
 		}
-		
-<span class="fc" id="L83">		byte[] bytesLeft = jsonData.getLeft().getBytes();</span>
-<span class="fc" id="L84">		byte[] bytesRight = jsonData.getRight().getBytes();</span>
 
-<span class="fc" id="L86">		boolean blnResult = Arrays.equals(bytesLeft, bytesRight);</span>
+<span class="fc" id="L82">		byte[] bytesLeft = jsonData.getLeft().getBytes();</span>
+<span class="fc" id="L83">		byte[] bytesRight = jsonData.getRight().getBytes();</span>
 
-<span class="fc bfc" id="L88" title="All 2 branches covered.">		if (blnResult) {</span>
-<span class="fc" id="L89">			response.setMessage(EQUAL_JSON);</span>
-<span class="fc bfc" id="L90" title="All 2 branches covered.">		} else if (bytesLeft.length != bytesRight.length) {</span>
-<span class="fc" id="L91">			response.setMessage(EQUAL_JSON_WITH_DIFF_SIZE);</span>
-		} else {
-<span class="fc" id="L93">			StringJoiner offsets = new StringJoiner(&quot; &quot;);</span>
-<span class="fc" id="L94">			byte different = 0;</span>
-<span class="fc bfc" id="L95" title="All 2 branches covered.">			for (Integer index = 0; index &lt; bytesLeft.length; index++) {</span>
-<span class="fc" id="L96">				different = (byte) (bytesLeft[index] ^ bytesRight[index]);</span>
-<span class="fc bfc" id="L97" title="All 2 branches covered.">				if (different != 0) {</span>
-<span class="fc" id="L98">					offsets.add(index.toString());</span>
+<span class="fc" id="L85">		boolean blnResult = Arrays.equals(bytesLeft, bytesRight);</span>
+
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		if (blnResult) {</span>
+<span class="fc" id="L88">			response.setMessage(EQUAL_JSON_SUCCESS_MESSAGE);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		} else if (bytesLeft.length != bytesRight.length) {</span>
+<span class="fc" id="L90">			response.setMessage(EQUAL_JSON_WITH_DIFFERENT_SIZE);</span>
+<span class="fc" id="L91">		} else {</span>
+<span class="fc" id="L92">			StringJoiner offsets = new StringJoiner(&quot; &quot;);</span>
+<span class="fc" id="L93">			byte different = 0;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">			for (Integer index = 0; index &lt; bytesLeft.length; index++) {</span>
+<span class="fc" id="L95">				different = (byte) (bytesLeft[index] ^ bytesRight[index]);</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">				if (different != 0) {</span>
+<span class="fc" id="L97">					offsets.add(index.toString());</span>
 				}
 			}
-<span class="fc" id="L101">			response.setMessage(String.format(DIFFERENT_OFFSET, offsets.toString()));</span>
+<span class="fc" id="L100">			response.setMessage(String.format(DIFFERENT_OFFSET, offsets.toString()));</span>
 		}
-<span class="fc" id="L103">		return response;</span>
+<span class="fc" id="L102">		return response;</span>
 	}
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 7:37:10 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 9:09:08 PM)</div></body></html>

@@ -11,6 +11,12 @@ import javax.validation.Payload;
 
 import com.assingment.scalableweb.validation.impl.Base64ValidationImpl;
 
+/**
+ * This is an annotation used to validate the String in Base 64 format.
+ * 
+ * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
+ *
+ */
 @Documented
 @Target( { ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

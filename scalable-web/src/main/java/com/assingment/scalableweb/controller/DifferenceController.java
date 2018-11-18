@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assingment.scalableweb.datatransferobject.JsonRequestDTO;
@@ -24,15 +23,16 @@ import com.assingment.scalableweb.service.DifferenceService;
 /**
  * 
  * This controller is responsible for getting the difference of 2 Base64 encoded
- * Jsons
+ * Jsons in {@code JsonResponseDTO}
  *
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
  */
+
 @RestController
 @RequestMapping("/v1/diff/{id}")
 public class DifferenceController {
 
-	private static final String JSON_DATA_SAVED_SUCCESSFULY = "Json Data on the %s side saved successfuly";
+	private static final String JSON_DATA_SAVED_SUCCESSFULY = "Json Data on the %s side saved successfully";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DifferenceController.class);
 
@@ -40,15 +40,15 @@ public class DifferenceController {
 	private DifferenceService service;
 
 	/**
-	 * 
-	 * Stores the left side in the JSON base64 base String for comparison
+	 * Stores the left side of {@code JsonDataDO} in the JSON base64 format
 	 *
 	 * @param id
-	 *            unique identifier.
+	 *            Unique identifier of {@code JsonDataDO}
 	 * @param request
-	 *            string based base64 value to store.
-	 * @return an object of JsonResponseDTO with operation message to be showed
-	 *         in the response.
+	 *            contains JSON base64 format String in {@code JsonRequestDTO}
+	 *            to store in repository.
+	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
+	 *         and {@code HttpStatus}
 	 */
 	@PostMapping(value = "/left", produces = MediaType.APPLICATION_JSON_VALUE)
 	private ResponseEntity<JsonResponseDTO> createLeftSide(@PathVariable Long id,
@@ -58,31 +58,30 @@ public class DifferenceController {
 	}
 
 	/**
-	 * 
-	 * Stores the left side in the JSON base64 base String for comparison
+	 * Stores the right side of {@code JsonDataDO} in the JSON base64 format
 	 *
 	 * @param id
-	 *            unique identifier. If posted some already existing value, it
-	 *            will be updated.
+	 *            Unique identifier of {@code JsonDataDO}
 	 * @param request
-	 *            string based base64 value for being updated.
-	 * @return an object of JsonResponseDTO with operation message to be showed in
-	 *         the response.
+	 *            contains JSON base64 format String in {@code JsonRequestDTO}
+	 *            to store in repository.
+	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
+	 *         and {@code HttpStatus}
 	 */
 	@PostMapping(value = "/right", produces = MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity<JsonResponseDTO> createRightSide(@PathVariable Long id, @Valid @RequestBody JsonRequestDTO request) {
+	private ResponseEntity<JsonResponseDTO> createRightSide(@PathVariable Long id,
+			@Valid @RequestBody JsonRequestDTO request) {
 		LOGGER.debug("Entering createRightSide(id={}, request={})", id, request);
 		return createJsonData(id, request, Side.RIGHT);
 	}
 
 	/**
-	 * 
-	 * Returns the comparison result between left and right sides of a JSON base64 base String.
+	 * Returns the comparison of left and right sides of a {@code JsonDataDO}
 	 *
 	 * @param id
-	 *            JsonData identifier
-	 * @return an object of JsonResponseDTO with operation message to be showed in
-	 *         the response.
+	 *            Unique identifier of {@code JsonDataDO}
+	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
+	 *         and {@code HttpStatus}
 	 */
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	private ResponseEntity<JsonResponseDTO> getDifference(@PathVariable Long id) {
@@ -93,11 +92,14 @@ public class DifferenceController {
 	 * Stores the Left / Right side of the JSON base64 base String into database
 	 * 
 	 * @param id
-	 *            JsonData identifier
-	 * @param request string based base64 value for being updated.
-	 * @param side contains the side where the jsno data will be stored
-	 * @return an object of JsonResponseDTO with simple message to be showed in
-	 *         the response.
+	 *            Unique identifier of {@code JsonDataDO}
+	 * @param request
+	 *            contains JSON base64 format String in {@code JsonRequestDTO}
+	 *            to store in repository.
+	 * @param side
+	 *            contains the side where the jsno data will be stored
+	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
+	 *         and {@code HttpStatus}
 	 */
 	private ResponseEntity<JsonResponseDTO> createJsonData(Long id, JsonRequestDTO request, Side side) {
 		LOGGER.debug("Entering createJsonData(id={}, request={}, side={})", id, request, side);
@@ -110,6 +112,13 @@ public class DifferenceController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
+	/**
+	 * Formats the successfully saved data message
+	 * 
+	 * @param side
+	 *            Site of the data to store in repository
+	 * @return formatted success message in String
+	 */
 	public static String getSuccessResponse(Side side) {
 		return String.format(JSON_DATA_SAVED_SUCCESSFULY, side.toString());
 	}

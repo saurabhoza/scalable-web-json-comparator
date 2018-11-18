@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DifferenceControllerITest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 7:37:10 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.controller</a> &gt; <span class="el_source">DifferenceControllerITest.java</span></div><h1>DifferenceControllerITest.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DifferenceControllerITest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 9:09:08 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.controller</a> &gt; <span class="el_source">DifferenceControllerITest.java</span></div><h1>DifferenceControllerITest.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.controller;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.is;
@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -33,10 +32,15 @@ import com.assingment.scalableweb.repository.JsonDataRepository;
 import com.assingment.scalableweb.service.DifferenceService;
 import com.assingment.scalableweb.util.TestUtil;
 
+/**
+ * This class contains the integration test cases of {@code DifferenceController}
+ * 
+ * @author &lt;a href=&quot;mailto:saurabh.s.oza@gmail.com&quot;&gt;Saurabh Oza&lt;/a&gt;.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-<span class="fc" id="L39">public class DifferenceControllerITest {</span>
+<span class="fc" id="L43">public class DifferenceControllerITest {</span>
 	
 	private static final String EMPTY_JSON_MESSAGE = &quot;Data field must not be empty.&quot;;
 
@@ -51,161 +55,160 @@ import com.assingment.scalableweb.util.TestUtil;
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	
-<span class="fc" id="L54">	private JsonRequestDTO validJsonRequest = new JsonRequestDTO(JSON_BASE64);</span>
+<span class="fc" id="L58">	private JsonRequestDTO validJsonRequest = new JsonRequestDTO(JSON_BASE64);</span>
 
 	@Before
 	public void setup() throws Exception {
-<span class="fc" id="L58">		this.mvc = webAppContextSetup(webApplicationContext).build();</span>
-<span class="fc" id="L59">		this.repository.deleteAll();</span>
-<span class="fc" id="L60">	}</span>
+<span class="fc" id="L62">		this.mvc = webAppContextSetup(webApplicationContext).build();</span>
+<span class="fc" id="L63">		this.repository.deleteAll();</span>
+<span class="fc" id="L64">	}</span>
 
 	@Test
 	public void insertEqualJsonStrings() throws Exception {
-<span class="fc" id="L64">		insertLeftSide_withValidJsonString();</span>
-<span class="fc" id="L65">		insertRightSide();</span>
-<span class="fc" id="L66">	}</span>
-	
-	private void insertLeftSide_withValidJsonString() throws Exception {
-<span class="fc" id="L69">		mvc.perform(MockMvcRequestBuilders.post(&quot;/v1/diff/1/left&quot;)</span>
-<span class="fc" id="L70">				.accept(MediaType.APPLICATION_JSON)</span>
-<span class="fc" id="L71">				.contentType(MediaType.APPLICATION_JSON)</span>
-<span class="fc" id="L72">				.content(TestUtil.convertObjectToJsonBytes(validJsonRequest)))</span>
-<span class="fc" id="L73">				.andExpect(status().isCreated())</span>
-<span class="fc" id="L74">				.andExpect(jsonPath(&quot;$.message&quot;, is(DifferenceController.getSuccessResponse(Side.LEFT))))</span>
-<span class="fc" id="L75">				.andReturn();</span>
-		
-<span class="fc" id="L77">		JsonDataDO jsonData = repository.findById(1L).orElse(null);</span>
-<span class="fc" id="L78">		assertThat(jsonData.getId(), Matchers.is(1L));</span>
-<span class="fc" id="L79">		assertThat(jsonData.getLeft(), Matchers.is(JSON_BASE64));</span>
-<span class="fc" id="L80">		assertThat(jsonData.getRight(), Matchers.isEmptyOrNullString());</span>
-<span class="fc" id="L81">	}</span>
+<span class="fc" id="L68">		insertLeftSide_withValidJsonString();</span>
+<span class="fc" id="L69">		insertRightSide_withValidJsonString();</span>
+<span class="fc" id="L70">	}</span>
 	
 	@Test
 	public void insertLeftSide_withEmptyJsonString() throws Exception {
-<span class="fc" id="L85">		insertInvalidJsonString(&quot;/left&quot;, new JsonRequestDTO(&quot;&quot;), EMPTY_JSON_MESSAGE);</span>
-<span class="fc" id="L86">	}</span>
+<span class="fc" id="L74">		insertInvalidJsonString(&quot;/left&quot;, new JsonRequestDTO(&quot;&quot;), EMPTY_JSON_MESSAGE);</span>
+<span class="fc" id="L75">	}</span>
 
 	@Test
 	public void insertLeftSide_withNullJsonString() throws Exception {
-<span class="fc" id="L90">		insertInvalidJsonString(&quot;/left&quot;, new JsonRequestDTO(null), EMPTY_JSON_MESSAGE);</span>
-<span class="fc" id="L91">	}</span>
+<span class="fc" id="L79">		insertInvalidJsonString(&quot;/left&quot;, new JsonRequestDTO(null), EMPTY_JSON_MESSAGE);</span>
+<span class="fc" id="L80">	}</span>
 	
 	@Test
 	public void insertRightSide_withEmptyJsonString() throws Exception {
-<span class="fc" id="L95">		insertInvalidJsonString(&quot;/right&quot;, new JsonRequestDTO(&quot;&quot;), EMPTY_JSON_MESSAGE);</span>
-<span class="fc" id="L96">	}</span>
+<span class="fc" id="L84">		insertInvalidJsonString(&quot;/right&quot;, new JsonRequestDTO(&quot;&quot;), EMPTY_JSON_MESSAGE);</span>
+<span class="fc" id="L85">	}</span>
 
 	@Test
 	public void insertRightSide_withNullJsonString() throws Exception {
-<span class="fc" id="L100">		insertInvalidJsonString(&quot;/right&quot;, new JsonRequestDTO(null), EMPTY_JSON_MESSAGE);</span>
-<span class="fc" id="L101">	}</span>
+<span class="fc" id="L89">		insertInvalidJsonString(&quot;/right&quot;, new JsonRequestDTO(null), EMPTY_JSON_MESSAGE);</span>
+<span class="fc" id="L90">	}</span>
 	
 	@Test
 	public void insertLeftSide_withInvalidBase64JsonString() throws Exception {
-<span class="fc" id="L105">		insertInvalidJsonString(&quot;/left&quot;, new JsonRequestDTO(&quot;ffdff...&amp;**&quot;), &quot;Input String is not in a valid Base 64 JSON format.&quot;);</span>
-<span class="fc" id="L106">	}</span>
+<span class="fc" id="L94">		insertInvalidJsonString(&quot;/left&quot;, new JsonRequestDTO(&quot;ffdff...&amp;**&quot;), &quot;Input String is not in a valid Base 64 JSON format.&quot;);</span>
+<span class="fc" id="L95">	}</span>
 	
 	@Test
 	public void insertRightSide_withInvalidBase64JsonString() throws Exception {
-<span class="fc" id="L110">		insertInvalidJsonString(&quot;/right&quot;, new JsonRequestDTO(&quot;ffdff...&amp;**&quot;), &quot;Input String is not in a valid Base 64 JSON format.&quot;);</span>
-<span class="fc" id="L111">	}</span>
-	
-	private void insertInvalidJsonString(String side, JsonRequestDTO request, String errorMessage) throws Exception, IOException {
-<span class="fc" id="L114">		mvc.perform(MockMvcRequestBuilders.post(&quot;/v1/diff/1&quot;+side)</span>
-<span class="fc" id="L115">				.accept(MediaType.APPLICATION_JSON)</span>
-<span class="fc" id="L116">				.contentType(MediaType.APPLICATION_JSON)</span>
-<span class="fc" id="L117">				.content(TestUtil.convertObjectToJsonBytes(request)))</span>
-<span class="fc" id="L118">				.andExpect(status().isBadRequest())</span>
-<span class="fc" id="L119">				.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Constraints Validation Failed&quot;)))</span>
-<span class="fc" id="L120">				.andExpect(jsonPath(&quot;$.details&quot;, is(errorMessage)))</span>
-<span class="fc" id="L121">				.andReturn();</span>
-		
-<span class="fc" id="L123">		JsonDataDO jsonData = repository.findById(1L).orElse(null);</span>
-<span class="fc" id="L124">		assertThat(jsonData, is(nullValue()));</span>
-<span class="fc" id="L125">	}</span>
-	
-	private void insertRightSide() throws Exception {
-<span class="fc" id="L128">		mvc.perform(MockMvcRequestBuilders.post(&quot;/v1/diff/1/right&quot;).accept(MediaType.APPLICATION_JSON)</span>
-<span class="fc" id="L129">				.contentType(MediaType.APPLICATION_JSON)</span>
-<span class="fc" id="L130">				.content(TestUtil.convertObjectToJsonBytes(validJsonRequest)))</span>
-<span class="fc" id="L131">				.andExpect(status().isCreated())</span>
-<span class="fc" id="L132">				.andExpect(jsonPath(&quot;$.message&quot;, is(DifferenceController.getSuccessResponse(Side.RIGHT))))</span>
-<span class="fc" id="L133">				.andReturn();</span>
-		
-<span class="fc" id="L135">		JsonDataDO jsonData = repository.findById(1L).orElse(null);</span>
-<span class="fc" id="L136">		assertThat(jsonData.getId(), Matchers.is(1L));</span>
-<span class="fc" id="L137">		assertThat(jsonData.getRight(), Matchers.is(JSON_BASE64));</span>
-<span class="fc" id="L138">		assertThat(jsonData.getLeft(), Matchers.is(JSON_BASE64));</span>
-<span class="fc" id="L139">	}</span>
+<span class="fc" id="L99">		insertInvalidJsonString(&quot;/right&quot;, new JsonRequestDTO(&quot;ffdff...&amp;**&quot;), &quot;Input String is not in a valid Base 64 JSON format.&quot;);</span>
+<span class="fc" id="L100">	}</span>
 	
 	@Test
 	public void checkDifference_withEqualJsonStrings() throws Exception {
-<span class="fc" id="L143">		repository.save(new JsonDataDO(1l, JSON_BASE64, JSON_BASE64));</span>
-<span class="fc" id="L144">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/1&quot;))</span>
-<span class="fc" id="L145">			.andExpect(status().isOk())</span>
-<span class="fc" id="L146">			.andExpect(jsonPath(&quot;$.message&quot;, is(DifferenceService.EQUAL_JSON)))</span>
-<span class="fc" id="L147">			.andReturn();		</span>
-<span class="fc" id="L148">	}</span>
+<span class="fc" id="L104">		repository.save(new JsonDataDO(1l, JSON_BASE64, JSON_BASE64));</span>
+<span class="fc" id="L105">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/1&quot;))</span>
+<span class="fc" id="L106">			.andExpect(status().isOk())</span>
+<span class="fc" id="L107">			.andExpect(jsonPath(&quot;$.message&quot;, is(DifferenceService.EQUAL_JSON_SUCCESS_MESSAGE)))</span>
+<span class="fc" id="L108">			.andReturn();		</span>
+<span class="fc" id="L109">	}</span>
 	
 	@Test
 	public void checkDifference_withDifferentSizeJsonStrings() throws Exception {
-<span class="fc" id="L152">		repository.save(new JsonDataDO(1l, JSON_BASE64, &quot;dGhlIDJuZCB0ZXN0IGZvciBjb21wYXJpbmc=&quot;));</span>
-<span class="fc" id="L153">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/1&quot;))</span>
-<span class="fc" id="L154">			.andExpect(status().isOk())</span>
-<span class="fc" id="L155">			.andExpect(jsonPath(&quot;$.message&quot;, is(DifferenceService.EQUAL_JSON_WITH_DIFF_SIZE)))</span>
-<span class="fc" id="L156">			.andReturn();		</span>
-<span class="fc" id="L157">	}</span>
+<span class="fc" id="L113">		repository.save(new JsonDataDO(1l, JSON_BASE64, &quot;dGhlIDJuZCB0ZXN0IGZvciBjb21wYXJpbmc=&quot;));</span>
+<span class="fc" id="L114">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/1&quot;))</span>
+<span class="fc" id="L115">			.andExpect(status().isOk())</span>
+<span class="fc" id="L116">			.andExpect(jsonPath(&quot;$.message&quot;, is(DifferenceService.EQUAL_JSON_WITH_DIFFERENT_SIZE)))</span>
+<span class="fc" id="L117">			.andReturn();		</span>
+<span class="fc" id="L118">	}</span>
 	
 	@Test
 	public void checkDifference_withDifferentOffsetJsonStrings() throws Exception {
-<span class="fc" id="L161">		repository.save(new JsonDataDO(1l, JSON_BASE64, &quot;dAVBdGluZyB0aGUgYmFzZTY0&quot;));</span>
-<span class="fc" id="L162">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/1&quot;))</span>
-<span class="fc" id="L163">			.andExpect(status().isOk())</span>
-<span class="fc" id="L164">			.andExpect(jsonPath(&quot;$.message&quot;, is(String.format(DifferenceService.DIFFERENT_OFFSET, &quot;1 3&quot;))))</span>
-<span class="fc" id="L165">			.andReturn();		</span>
-<span class="fc" id="L166">	}</span>
-	
+<span class="fc" id="L122">		repository.save(new JsonDataDO(1l, JSON_BASE64, &quot;dAVBdGluZyB0aGUgYmFzZTY0&quot;));</span>
+<span class="fc" id="L123">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/1&quot;))</span>
+<span class="fc" id="L124">			.andExpect(status().isOk())</span>
+<span class="fc" id="L125">			.andExpect(jsonPath(&quot;$.message&quot;, is(String.format(DifferenceService.DIFFERENT_OFFSET, &quot;1 3&quot;))))</span>
+<span class="fc" id="L126">			.andReturn();		</span>
+<span class="fc" id="L127">	}</span>
 	
 	@Test
 	public void checkDifference_withOnlyLeftSideOfJsonData() throws Exception {
-<span class="fc" id="L171">		repository.save(new JsonDataDO(2L, JSON_BASE64, &quot;&quot;));</span>
-<span class="fc" id="L172">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/2&quot;))</span>
-<span class="fc" id="L173">			.andExpect(status().isNotFound())</span>
-<span class="fc" id="L174">			.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Missing Data&quot;)))</span>
-<span class="fc" id="L175">			.andExpect(jsonPath(&quot;$.details&quot;, is(MissingJsonDataException.getMissingJsonDataMessage(2L, Side.RIGHT))))</span>
-<span class="fc" id="L176">			.andExpect(jsonPath(&quot;$.status&quot;, is(HttpStatus.NOT_FOUND.value())))</span>
-<span class="fc" id="L177">			.andReturn();			</span>
-<span class="fc" id="L178">	}</span>
+<span class="fc" id="L131">		repository.save(new JsonDataDO(2L, JSON_BASE64, &quot;&quot;));</span>
+<span class="fc" id="L132">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/2&quot;))</span>
+<span class="fc" id="L133">			.andExpect(status().isNotFound())</span>
+<span class="fc" id="L134">			.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Missing Data&quot;)))</span>
+<span class="fc" id="L135">			.andExpect(jsonPath(&quot;$.details&quot;, is(MissingJsonDataException.getMissingJsonDataMessage(2L, Side.RIGHT))))</span>
+<span class="fc" id="L136">			.andExpect(jsonPath(&quot;$.status&quot;, is(HttpStatus.NOT_FOUND.value())))</span>
+<span class="fc" id="L137">			.andReturn();			</span>
+<span class="fc" id="L138">	}</span>
 	
 	@Test
 	public void checkDifference_withOnlyRightSideOfJsonData() throws Exception {
-<span class="fc" id="L182">		repository.save(new JsonDataDO(2L, &quot;&quot;, JSON_BASE64));</span>
-<span class="fc" id="L183">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/2&quot;))</span>
-<span class="fc" id="L184">			.andExpect(status().isNotFound())</span>
-<span class="fc" id="L185">			.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Missing Data&quot;)))</span>
-<span class="fc" id="L186">			.andExpect(jsonPath(&quot;$.details&quot;, is(MissingJsonDataException.getMissingJsonDataMessage(2L, Side.LEFT))))</span>
-<span class="fc" id="L187">			.andExpect(jsonPath(&quot;$.status&quot;, is(HttpStatus.NOT_FOUND.value())))</span>
-<span class="fc" id="L188">			.andReturn();			</span>
-<span class="fc" id="L189">	}</span>
+<span class="fc" id="L142">		repository.save(new JsonDataDO(2L, &quot;&quot;, JSON_BASE64));</span>
+<span class="fc" id="L143">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/2&quot;))</span>
+<span class="fc" id="L144">			.andExpect(status().isNotFound())</span>
+<span class="fc" id="L145">			.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Missing Data&quot;)))</span>
+<span class="fc" id="L146">			.andExpect(jsonPath(&quot;$.details&quot;, is(MissingJsonDataException.getMissingJsonDataMessage(2L, Side.LEFT))))</span>
+<span class="fc" id="L147">			.andExpect(jsonPath(&quot;$.status&quot;, is(HttpStatus.NOT_FOUND.value())))</span>
+<span class="fc" id="L148">			.andReturn();			</span>
+<span class="fc" id="L149">	}</span>
 	
 	@Test
 	public void checkDifference_withInvalidId() throws Exception {
-<span class="fc" id="L193">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/2&quot;))</span>
-<span class="fc" id="L194">			.andExpect(status().isNotFound())</span>
-<span class="fc" id="L195">			.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Resource Not Found&quot;)))</span>
-<span class="fc" id="L196">			.andExpect(jsonPath(&quot;$.details&quot;, is(ResourceNotFoundException.getResourceNotFoundMessage(2L))))</span>
-<span class="fc" id="L197">			.andExpect(jsonPath(&quot;$.status&quot;, is(HttpStatus.NOT_FOUND.value())))</span>
-<span class="fc" id="L198">			.andReturn();			</span>
-<span class="fc" id="L199">	}</span>
+<span class="fc" id="L153">		mvc.perform(MockMvcRequestBuilders.get(&quot;/v1/diff/2&quot;))</span>
+<span class="fc" id="L154">			.andExpect(status().isNotFound())</span>
+<span class="fc" id="L155">			.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Resource Not Found&quot;)))</span>
+<span class="fc" id="L156">			.andExpect(jsonPath(&quot;$.details&quot;, is(ResourceNotFoundException.getResourceNotFoundMessage(2L))))</span>
+<span class="fc" id="L157">			.andExpect(jsonPath(&quot;$.status&quot;, is(HttpStatus.NOT_FOUND.value())))</span>
+<span class="fc" id="L158">			.andReturn();			</span>
+<span class="fc" id="L159">	}</span>
 	
 	@Test
 	public void insertRightSide_withInvalidInputObject() throws Exception {
-<span class="fc" id="L203">		mvc.perform(MockMvcRequestBuilders.post(&quot;/v1/diff/1/right&quot;)</span>
-<span class="fc" id="L204">				.contentType(MediaType.APPLICATION_JSON)</span>
-<span class="fc" id="L205">				.content(&quot;Invalid Input&quot;))</span>
-<span class="fc" id="L206">				.andExpect(status().isBadRequest())</span>
-<span class="fc" id="L207">				.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Message Not Readable&quot;)))</span>
+<span class="fc" id="L163">		mvc.perform(MockMvcRequestBuilders.post(&quot;/v1/diff/1/right&quot;)</span>
+<span class="fc" id="L164">				.contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L165">				.content(&quot;Invalid Input&quot;))</span>
+<span class="fc" id="L166">				.andExpect(status().isBadRequest())</span>
+<span class="fc" id="L167">				.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Message Not Readable&quot;)))</span>
+<span class="fc" id="L168">				.andReturn();</span>
+<span class="fc" id="L169">	}</span>
+	
+	private void insertLeftSide_withValidJsonString() throws Exception {
+<span class="fc" id="L172">		mvc.perform(MockMvcRequestBuilders.post(&quot;/v1/diff/1/left&quot;)</span>
+<span class="fc" id="L173">				.accept(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L174">				.contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L175">				.content(TestUtil.convertObjectToJsonBytes(validJsonRequest)))</span>
+<span class="fc" id="L176">				.andExpect(status().isCreated())</span>
+<span class="fc" id="L177">				.andExpect(jsonPath(&quot;$.message&quot;, is(DifferenceController.getSuccessResponse(Side.LEFT))))</span>
+<span class="fc" id="L178">				.andReturn();</span>
+		
+<span class="fc" id="L180">		JsonDataDO jsonData = repository.findById(1L).orElse(null);</span>
+<span class="fc" id="L181">		assertThat(jsonData.getId(), Matchers.is(1L));</span>
+<span class="fc" id="L182">		assertThat(jsonData.getLeft(), Matchers.is(JSON_BASE64));</span>
+<span class="fc" id="L183">		assertThat(jsonData.getRight(), Matchers.isEmptyOrNullString());</span>
+<span class="fc" id="L184">	}</span>
+	
+	private void insertRightSide_withValidJsonString() throws Exception {
+<span class="fc" id="L187">		mvc.perform(MockMvcRequestBuilders.post(&quot;/v1/diff/1/right&quot;).accept(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L188">				.contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L189">				.content(TestUtil.convertObjectToJsonBytes(validJsonRequest)))</span>
+<span class="fc" id="L190">				.andExpect(status().isCreated())</span>
+<span class="fc" id="L191">				.andExpect(jsonPath(&quot;$.message&quot;, is(DifferenceController.getSuccessResponse(Side.RIGHT))))</span>
+<span class="fc" id="L192">				.andReturn();</span>
+		
+<span class="fc" id="L194">		JsonDataDO jsonData = repository.findById(1L).orElse(null);</span>
+<span class="fc" id="L195">		assertThat(jsonData.getId(), Matchers.is(1L));</span>
+<span class="fc" id="L196">		assertThat(jsonData.getRight(), Matchers.is(JSON_BASE64));</span>
+<span class="fc" id="L197">		assertThat(jsonData.getLeft(), Matchers.is(JSON_BASE64));</span>
+<span class="fc" id="L198">	}</span>
+	
+	private void insertInvalidJsonString(String side, JsonRequestDTO request, String errorMessage) throws Exception, IOException {
+<span class="fc" id="L201">		mvc.perform(MockMvcRequestBuilders.post(&quot;/v1/diff/1&quot;+side)</span>
+<span class="fc" id="L202">				.accept(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L203">				.contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L204">				.content(TestUtil.convertObjectToJsonBytes(request)))</span>
+<span class="fc" id="L205">				.andExpect(status().isBadRequest())</span>
+<span class="fc" id="L206">				.andExpect(jsonPath(&quot;$.title&quot;, is(&quot;Constraints Validation Failed&quot;)))</span>
+<span class="fc" id="L207">				.andExpect(jsonPath(&quot;$.details&quot;, is(errorMessage)))</span>
 <span class="fc" id="L208">				.andReturn();</span>
-<span class="fc" id="L209">	}</span>
+		
+<span class="fc" id="L210">		JsonDataDO jsonData = repository.findById(1L).orElse(null);</span>
+<span class="fc" id="L211">		assertThat(jsonData, is(nullValue()));</span>
+<span class="fc" id="L212">	}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 7:37:10 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 9:09:08 PM)</div></body></html>

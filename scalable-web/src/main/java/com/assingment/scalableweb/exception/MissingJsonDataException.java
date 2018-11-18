@@ -3,8 +3,8 @@ package com.assingment.scalableweb.exception;
 import com.assingment.scalableweb.enums.Side;
 
 /**
- * Missing Json Data Exception.
- * Exception occurs when one or two sides of the JsonData is missing
+ * Exception occurs when one or two sides of {@code JsonDataDO} is empty or null 
+ * 
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>
  */
 public class MissingJsonDataException extends RuntimeException {

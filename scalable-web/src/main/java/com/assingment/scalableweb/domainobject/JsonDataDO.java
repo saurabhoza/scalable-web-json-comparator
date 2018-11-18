@@ -9,13 +9,14 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+
+/**
+ * Holds the actual Base 64 formatted JSON data
+ * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
+ */
+
 @Entity
 public class JsonDataDO {
-
-	public JsonDataDO(long id) {
-		super();
-		this.id = id;
-	}
 
 	/**
 	 * Using the primitive type, since it does not accept null values.
@@ -26,14 +27,12 @@ public class JsonDataDO {
 	/**
 	 * Left side of the comparison
 	 */
-	@Lob
 	@Column(length = 32000)
 	private String left;
 	
 	/**
 	 * Right side of the comparison
 	 */
-	@Lob
 	@Column(length = 32000)
 	private String right;
 
@@ -44,6 +43,11 @@ public class JsonDataDO {
 
 	}
 
+	public JsonDataDO(long id) {
+		super();
+		this.id = id;
+	}
+	
 	/**
 	 * This constructor creates new object instances for validation and persistence.
 	 * 
@@ -80,7 +84,6 @@ public class JsonDataDO {
 	public void setRight(String right) {
 		this.right = right;
 	}
-	
 
 	@Override
 	public int hashCode() {

@@ -28,6 +28,11 @@ import com.assingment.scalableweb.exception.MissingJsonDataException;
 import com.assingment.scalableweb.exception.ResourceNotFoundException;
 import com.assingment.scalableweb.repository.JsonDataRepository;
 
+/**
+ * This class contains the unit test cases of {@code DifferenceService}
+ * 
+ * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,15 +43,15 @@ public class DifferenceServiceTest {
 
 	@Mock
 	public JsonDataRepository repository;
-	
+
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
-	
+
 	@Before
 	public void setup() throws Exception {
 		MockitoAnnotations.initMocks(this);
 	}
-	
+
 	@Test
 	public void notFound() throws Exception {
 		Mockito.doReturn(Optional.empty()).when(repository).findById(Mockito.eq(1L));
@@ -56,7 +61,7 @@ public class DifferenceServiceTest {
 		assertThat(left.getLeft(), Matchers.is("Left"));
 		assertThat(left.getRight(), Matchers.isEmptyOrNullString());
 	}
-	
+
 	@Test
 	public void leftFound() throws Exception {
 		Optional<JsonDataDO> document = Optional.of(new JsonDataDO(1L, null, "Right"));
@@ -67,7 +72,7 @@ public class DifferenceServiceTest {
 		assertThat(left.getLeft(), Matchers.is("Left"));
 		assertThat(left.getRight(), Matchers.is("Right"));
 	}
-	
+
 	@Test
 	public void rightFound() throws Exception {
 		Optional<JsonDataDO> document = Optional.of(new JsonDataDO(1L, "Left", null));
@@ -78,7 +83,7 @@ public class DifferenceServiceTest {
 		assertThat(left.getLeft(), Matchers.is("Left"));
 		assertThat(left.getRight(), Matchers.is("Right"));
 	}
-	
+
 	@Test
 	public void rightNotFound() throws Exception {
 		Mockito.doReturn(Optional.empty()).when(repository).findById(Mockito.eq(1L));
@@ -88,7 +93,7 @@ public class DifferenceServiceTest {
 		assertThat(left.getRight(), Matchers.is("Right"));
 		assertThat(left.getLeft(), Matchers.isEmptyOrNullString());
 	}
-	
+
 	@Test
 	public void diffNoDataFound() throws Exception {
 		exception.expect(ResourceNotFoundException.class);
@@ -96,11 +101,11 @@ public class DifferenceServiceTest {
 		Mockito.doReturn(Optional.empty()).when(repository).findById(Mockito.eq(1L));
 		service.getDifference(1L);
 	}
-	
+
 	@Test
 	public void diffMissingRight() throws Exception {
 		exception.expect(MissingJsonDataException.class);
-		exception.expectMessage(containsString(MissingJsonDataException.getMissingJsonDataMessage(1L,Side.RIGHT)));
+		exception.expectMessage(containsString(MissingJsonDataException.getMissingJsonDataMessage(1L, Side.RIGHT)));
 		Optional<JsonDataDO> document = Optional.of(new JsonDataDO(1L, "Left", null));
 		Mockito.doReturn(document).when(repository).findById(Mockito.eq(1L));
 		service.getDifference(1L);
@@ -109,36 +114,36 @@ public class DifferenceServiceTest {
 	@Test
 	public void iffMissingLeft() throws Exception {
 		exception.expect(MissingJsonDataException.class);
-		exception.expectMessage(containsString(MissingJsonDataException.getMissingJsonDataMessage(1L,Side.LEFT)));
+		exception.expectMessage(containsString(MissingJsonDataException.getMissingJsonDataMessage(1L, Side.LEFT)));
 		Optional<JsonDataDO> document = Optional.of(new JsonDataDO(1L, null, "Right"));
 		Mockito.doReturn(document).when(repository).findById(Mockito.eq(1L));
 		service.getDifference(1L);
 	}
-	
+
 	@Test
 	public void diffEqual() throws Exception {
 		Optional<JsonDataDO> document = Optional.of(new JsonDataDO(1L, "DBVsbG8gd29ybGJK=", "DBVsbG8gd29ybGJK="));
 		Mockito.doReturn(document).when(repository).findById(Mockito.eq(1L));
 		JsonResponseDTO response = service.getDifference(1L);
-		
-		assertThat(response.getMessage(), Matchers.is(DifferenceService.EQUAL_JSON));
+
+		assertThat(response.getMessage(), Matchers.is(DifferenceService.EQUAL_JSON_SUCCESS_MESSAGE));
 	}
-	
+
 	@Test
 	public void diffDifferentSize() throws Exception {
 		Optional<JsonDataDO> document = Optional.of(new JsonDataDO(1L, "DBVsbG8gd29ybG=", "DBVsbG8gd29ybGJK="));
 		Mockito.doReturn(document).when(repository).findById(Mockito.eq(1L));
 		JsonResponseDTO response = service.getDifference(1L);
 
-		assertThat(response.getMessage(), Matchers.is(DifferenceService.EQUAL_JSON_WITH_DIFF_SIZE));
+		assertThat(response.getMessage(), Matchers.is(DifferenceService.EQUAL_JSON_WITH_DIFFERENT_SIZE));
 	}
-	
+
 	@Test
 	public void diffDifferentOffset() throws Exception {
 		Optional<JsonDataDO> document = Optional.of(new JsonDataDO(1L, "ABVsbG8gd29ybGJK=", "DBVsbG8gd29ybGJK="));
 		Mockito.doReturn(document).when(repository).findById(Mockito.eq(1L));
 		JsonResponseDTO response = service.getDifference(1L);
-		
+
 		assertThat(response.getMessage(), Matchers.is(String.format(DifferenceService.DIFFERENT_OFFSET, "0")));
 	}
 }
