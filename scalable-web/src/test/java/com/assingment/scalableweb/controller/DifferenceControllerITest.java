@@ -198,6 +198,13 @@ public class DifferenceControllerITest {
 			.andReturn();			
 	}
 	
-	
-	
+	@Test
+	public void insertRightSide_withInvalidInputObject() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post("/v1/diff/1/right")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("Invalid Input"))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.title", is("Message Not Readable")))
+				.andReturn();
+	}
 }

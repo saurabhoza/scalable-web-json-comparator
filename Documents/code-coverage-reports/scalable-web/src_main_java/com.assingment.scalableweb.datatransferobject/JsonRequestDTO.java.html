@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>JsonRequestDTO.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 7:37:10 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.datatransferobject</a> &gt; <span class="el_source">JsonRequestDTO.java</span></div><h1>JsonRequestDTO.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.datatransferobject;
+
+
+import javax.validation.constraints.NotEmpty;
+
+import com.assingment.scalableweb.validation.Base64Validation;
+
+/**
+ * Class created for receiving the json data from request on the DiffController.
+ *
+ * @author &lt;a href=&quot;mailto:saurabh.s.oza@gmail.com&quot;&gt;Saurabh Oza&lt;/a&gt;.
+ */
+public class JsonRequestDTO {
+
+	public JsonRequestDTO() {
+<span class="fc" id="L16">		super();</span>
+<span class="fc" id="L17">	}</span>
+
+	public JsonRequestDTO(String data) {
+<span class="fc" id="L20">		super();</span>
+<span class="fc" id="L21">		this.data = data;</span>
+<span class="fc" id="L22">	}</span>
+
+	/**
+	 * Simple string variable that receives the base64 encoded JSON data
+	 */
+	@NotEmpty(message=&quot;Data field must not be empty.&quot;)
+	@Base64Validation
+	private String data;
+
+	public String getData() {
+<span class="fc" id="L32">		return data;</span>
+	}
+
+	public void setData(String data) {
+<span class="fc" id="L36">		this.data = data;</span>
+<span class="fc" id="L37">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 7:37:10 PM)</div></body></html>

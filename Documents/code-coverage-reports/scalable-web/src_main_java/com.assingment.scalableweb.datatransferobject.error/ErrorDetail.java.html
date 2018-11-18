@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ErrorDetail.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">scalable-web (4) (18 Nov, 2018 7:37:10 PM)</a> &gt; <a href="../../index.html" class="el_group">scalable-web</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.assingment.scalableweb.datatransferobject.error</a> &gt; <span class="el_source">ErrorDetail.java</span></div><h1>ErrorDetail.java</h1><pre class="source lang-java linenums">package com.assingment.scalableweb.datatransferobject.error;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+/**
+ * Generic response for error cases
+ * @author &lt;a href=&quot;mailto:saurabh.s.oza@gmail.com&quot;&gt;Saurabh Oza&lt;/a&gt;.
+ */
+<span class="fc" id="L9">public class ErrorDetail {</span>
+
+    private String title;
+    private int status;
+    private String details;
+    private long timeStamp;
+
+    public String getTitle() {
+<span class="fc" id="L17">        return title;</span>
+    }
+
+    public void setTitle(String title) {
+<span class="fc" id="L21">        this.title = title;</span>
+<span class="fc" id="L22">    }</span>
+
+    public int getStatus() {
+<span class="fc" id="L25">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="fc" id="L29">        this.status = status;</span>
+<span class="fc" id="L30">    }</span>
+
+    public String getDetails() {
+<span class="fc" id="L33">        return details;</span>
+    }
+
+    public void setDetails(String details) {
+<span class="fc" id="L37">        this.details = details;</span>
+<span class="fc" id="L38">    }</span>
+
+    public long getTimeStamp() {
+<span class="fc" id="L41">        return timeStamp;</span>
+    }
+
+    public void setTimeStamp(long timeStamp) {
+<span class="fc" id="L45">        this.timeStamp = timeStamp;</span>
+<span class="fc" id="L46">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L50">       return ToStringBuilder.reflectionToString(this);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span>scalable-web (4) (18 Nov, 2018 7:37:10 PM)</div></body></html>
