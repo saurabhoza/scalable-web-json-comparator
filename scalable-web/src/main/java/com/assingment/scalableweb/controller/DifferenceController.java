@@ -19,6 +19,14 @@ import com.assingment.scalableweb.datatransferobject.JsonRequestDTO;
 import com.assingment.scalableweb.datatransferobject.JsonResponseDTO;
 import com.assingment.scalableweb.enums.Side;
 import com.assingment.scalableweb.service.DifferenceService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 /**
  * 
@@ -30,9 +38,11 @@ import com.assingment.scalableweb.service.DifferenceService;
 
 @RestController
 @RequestMapping("/v1/diff/{id}")
+@Api(tags = { "DifferenceController" })
 public class DifferenceController {
 
 	private static final String JSON_DATA_SAVED_SUCCESSFULY = "Json Data on the %s side saved successfully";
+	private static final String SAMPLE_REQUEST = "{\"data\":\"dGVzdGluZyB0aGUgYmFzZTY0\"}";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DifferenceController.class);
 
@@ -50,8 +60,13 @@ public class DifferenceController {
 	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
 	 *         and {@code HttpStatus}
 	 */
+
+	@ApiOperation(value = "Stores the left side of JsonData in the JSON base64 format", response = JsonResponseDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "The left side of JsonData is successfully stored into repository."),
+			@ApiResponse(code = 400, message = "Invalid input is passed"), })
 	@PostMapping(value = "/left", produces = MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity<JsonResponseDTO> createLeftSide(@PathVariable Long id,
+	public ResponseEntity<JsonResponseDTO> createLeftSide(@PathVariable Long id,
 			@Valid @RequestBody JsonRequestDTO request) {
 		LOGGER.debug("Entering createLeftSide(id={}, request={})", id, request);
 		return createJsonData(id, request, Side.LEFT);
@@ -68,8 +83,12 @@ public class DifferenceController {
 	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
 	 *         and {@code HttpStatus}
 	 */
+	@ApiOperation(value = "Stores the right side of JsonData in the JSON base64 format", response = JsonResponseDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "The right side of JsonData is successfully stored into repository."),
+			@ApiResponse(code = 400, message = "Invalid input is passed"), })
 	@PostMapping(value = "/right", produces = MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity<JsonResponseDTO> createRightSide(@PathVariable Long id,
+	public ResponseEntity<JsonResponseDTO> createRightSide(@PathVariable Long id,
 			@Valid @RequestBody JsonRequestDTO request) {
 		LOGGER.debug("Entering createRightSide(id={}, request={})", id, request);
 		return createJsonData(id, request, Side.RIGHT);
@@ -83,8 +102,12 @@ public class DifferenceController {
 	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
 	 *         and {@code HttpStatus}
 	 */
+	@ApiOperation(value = "Compares the left and right side of JsonData in the JSON base64 format", response = JsonResponseDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Compared the left and right side of the JsonaData Successfully."),
+			@ApiResponse(code = 404, message = "Record not found in repository"), })
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	private ResponseEntity<JsonResponseDTO> getDifference(@PathVariable Long id) {
+	public ResponseEntity<JsonResponseDTO> getDifference(@PathVariable @ApiParam(defaultValue = "1") Long id) {
 		return new ResponseEntity<>(service.getDifference(id), HttpStatus.OK);
 	}
 

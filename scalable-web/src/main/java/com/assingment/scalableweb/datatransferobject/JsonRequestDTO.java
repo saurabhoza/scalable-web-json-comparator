@@ -4,6 +4,8 @@ import javax.validation.constraints.NotEmpty;
 
 import com.assingment.scalableweb.validation.Base64Validation;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Receives the Base 64 format JSON data from request in {@code DiffController}.
  *
@@ -23,6 +25,7 @@ public class JsonRequestDTO {
 	/**
 	 * Simple string variable that receives the base64 encoded JSON data
 	 */
+	@ApiModelProperty(notes="Contains the Base 64 encoded String", allowableValues="dGVzdGluZyB0aGUgYmFzZTY0", required=true, dataType="String")
 	@NotEmpty(message = "Data field must not be empty.")
 	@Base64Validation // custom validation to check if the string is in a valid
 						// base64 format.

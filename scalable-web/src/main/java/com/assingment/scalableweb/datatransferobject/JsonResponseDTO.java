@@ -1,5 +1,7 @@
 package com.assingment.scalableweb.datatransferobject;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Returns the comparison result of {@code JsonDataDO} from {@code DiffController}.
  *
@@ -8,6 +10,7 @@ package com.assingment.scalableweb.datatransferobject;
 
 public class JsonResponseDTO {
 
+	@ApiModelProperty(notes="Contains the message", dataType="String")
 	private String message;
 
 	public String getMessage() {
