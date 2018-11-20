@@ -22,13 +22,13 @@ import com.assingment.scalableweb.exception.MissingJsonDataException;
 import com.assingment.scalableweb.exception.ResourceNotFoundException;
 
 /**
- * Handles the Exception and converts to {@code ErrorDetail} format.
+ * Handles the Exception and converts to {@link ErrorDetail} format.
  * 
  * This is a convenient base class for
  * {@link ControllerAdvice @ControllerAdvice} classes that provides a
- * centralized exception handling across all {@code @RequestMapping} methods
- * through {@code @ExceptionHandler} methods and coverts them into
- * {@code ErrorDetail} format.
+ * centralized exception handling across all {@link @RequestMapping} methods
+ * through {@link @ExceptionHandler} methods and coverts them into
+ * {@link ErrorDetail} format.
  *
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
  */
@@ -41,21 +41,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	private static final String CONSTRAINTS_VALIDATION_FAILED = "Constraints Validation Failed";
 
 	/**
-	 * Customize the {@code ResourceNotFoundException} response into
-	 * {@code ErrorDetail}
+	 * Customize the {@link ResourceNotFoundException} response into
+	 * {@link ErrorDetail}
 	 * 
 	 * @param rnfe
 	 *            the exception
 	 * @param request
 	 *            the current request
-	 * @return @return a {@code ResponseEntity} instance with
-	 *         {@code ErrorDetail} and {@code HttpStatus}
+	 * @return @return a {@link ResponseEntity} instance with
+	 *         {@link ErrorDetail} and {@link HttpStatus}
 	 */
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<ErrorDetail> handleResourceNotFoundException(ResourceNotFoundException rnfe,
 			HttpServletRequest request) {
 
-		logger.error("ResourceNotFoundException is handled with error cause : {}", rnfe.getCause());
+		logger.error("ResourceNotFoundException is handled with error cause : ", rnfe);
 		ErrorDetail errorDetail = new ErrorDetail();
 		errorDetail.setTimeStamp(new Date().getTime());
 		errorDetail.setStatus(HttpStatus.NOT_FOUND.value());
@@ -66,20 +66,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/**
-	 * Customize the {@code MissingJsonDataException} response into
-	 * {@code ErrorDetail}
+	 * Customize the {@link MissingJsonDataException} response into
+	 * {@link ErrorDetail}
 	 * 
 	 * @param mbde
 	 *            the exception
 	 * @param request
 	 *            the current request
-	 * @return a {@code ResponseEntity} instance with {@code ErrorDetail} and
-	 *         {@code HttpStatus}
+	 * @return a {@link ResponseEntity} instance with {@link ErrorDetail} and
+	 *         {@link HttpStatus}
 	 */
 	@ExceptionHandler(MissingJsonDataException.class)
 	public ResponseEntity<ErrorDetail> handleMissingBinaryDataException(MissingJsonDataException mbde,
 			HttpServletRequest request) {
-		logger.error("MissingJsonDataException is handled with error cause : {}", mbde.getCause());
+		logger.error("MissingJsonDataException is handled with error cause : ", mbde);
 		ErrorDetail errorDetail = new ErrorDetail();
 		errorDetail.setTimeStamp(new Date().getTime());
 		errorDetail.setStatus(HttpStatus.NOT_FOUND.value());
@@ -90,8 +90,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/**
-	 * Customize the {@code MethodArgumentNotValidException} response into
-	 * {@code ErrorDetail}
+	 * Customize the {@link MethodArgumentNotValidException} response into
+	 * {@link ErrorDetail}
 	 *
 	 * @param manve
 	 *            the exception
@@ -101,13 +101,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	 *            the selected response status
 	 * @param request
 	 *            the current request
-	 * @return a {@code ResponseEntity} instance with {@code ErrorDetail} and
-	 *         {@code HttpStatus}
+	 * @return a {@link ResponseEntity} instance with {@link ErrorDetail} and
+	 *         {@link HttpStatus}
 	 */
 	@Override
 	public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException manve,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		logger.error("MethodArgumentNotValidException is handled with error cause : {}", manve.getCause());
+		logger.error("MethodArgumentNotValidException is handled with error cause : ", manve);
 		ErrorDetail errorDetail = new ErrorDetail();
 		errorDetail.setTimeStamp(new Date().getTime());
 		errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -128,13 +128,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	 *            the selected response status
 	 * @param request
 	 *            the current request
-	 * @return a {@code ResponseEntity} instance with {@code ErrorDetail} and
-	 *         {@code HttpStatus}
+	 * @return a {@link ResponseEntity} instance with {@link ErrorDetail} and
+	 *         {@link HttpStatus}
 	 */
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		logger.error("HttpMessageNotReadableException is handled with error cause : {}", ex.getCause());
+		logger.error("HttpMessageNotReadableException is handled with error cause :", ex);
 		ErrorDetail errorDetail = new ErrorDetail();
 		errorDetail.setTimeStamp(new Date().getTime());
 		errorDetail.setStatus(status.value());

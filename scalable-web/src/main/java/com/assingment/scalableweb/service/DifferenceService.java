@@ -18,7 +18,7 @@ import com.assingment.scalableweb.repository.JsonDataRepository;
 
 /**
  * Handles all the business layer logic of storing, updating and comparing the
- * {@code JsonDataDO} entity.
+ * {@link JsonDataDO} entity.
  * 
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.ss
  */
@@ -36,15 +36,15 @@ public class DifferenceService {
 
 	/**
 	 * 
-	 * Saves the JSON base64 {@code JsonDataDO} data into repository
+	 * Saves the JSON base64 {@link JsonDataDO} data into repository
 	 *
 	 * @param id
-	 *            Unique identifier of {@code JsonDataDO}
+	 *            Unique identifier of {@link JsonDataDO}
 	 * @param data
 	 *            in JSON Base64 format
 	 * @param side
-	 *            holds the left or right side of {@code Side}
-	 * @return {@code JsonDataDO} stored into the repository
+	 *            holds the left or right side of {@link Side}
+	 * @return {@link JsonDataDO} stored into the repository
 	 */
 	public JsonDataDO save(Long id, String data, Side side) {
 		LOGGER.debug("Entered in save(id={}, data={}, side={})", id, data, side);
@@ -60,12 +60,12 @@ public class DifferenceService {
 	}
 
 	/**
-	 * Compares the left and right sides of {@code JsonDataDO} Jsons and return
-	 * its results as {@code JsonResponseDTO}
+	 * Compares the left and right sides of {@link JsonDataDO} Jsons and return
+	 * its results as {@link JsonResponseDTO}
 	 * 
 	 * @param id
-	 *            Unique identifier of {@code JsonDataDO}
-	 * @return a difference information in {@code JsonResponseDTO}
+	 *            Unique identifier of {@link JsonDataDO}
+	 * @return a difference information in {@link JsonResponseDTO}
 	 */
 	public JsonResponseDTO getDifference(Long id) {
 		LOGGER.debug("Entered in getDifference(id={})", id);

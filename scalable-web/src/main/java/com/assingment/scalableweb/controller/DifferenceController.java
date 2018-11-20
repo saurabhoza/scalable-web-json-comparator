@@ -42,7 +42,6 @@ import io.swagger.annotations.ApiResponses;
 public class DifferenceController {
 
 	private static final String JSON_DATA_SAVED_SUCCESSFULY = "Json Data on the %s side saved successfully";
-	private static final String SAMPLE_REQUEST = "{\"data\":\"dGVzdGluZyB0aGUgYmFzZTY0\"}";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DifferenceController.class);
 
@@ -55,7 +54,7 @@ public class DifferenceController {
 	 * @param id
 	 *            Unique identifier of {@code JsonDataDO}
 	 * @param request
-	 *            contains JSON base64 format String in {@code JsonRequestDTO}
+	 *            contains JSON base64 format String in {@link JsonRequestDTO}
 	 *            to store in repository.
 	 * @return an object of {@code ResponseEntity} with {@code JsonResponseDTO}
 	 *         and {@code HttpStatus}

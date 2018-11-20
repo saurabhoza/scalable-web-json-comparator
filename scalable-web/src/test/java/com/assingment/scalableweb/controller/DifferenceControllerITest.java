@@ -33,7 +33,7 @@ import com.assingment.scalableweb.service.DifferenceService;
 import com.assingment.scalableweb.util.TestUtil;
 
 /**
- * This class contains the integration test cases of {@code DifferenceController}
+ * This class contains the integration test cases of {@link DifferenceController}
  * 
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
  */

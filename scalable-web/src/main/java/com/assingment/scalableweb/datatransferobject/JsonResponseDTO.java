@@ -3,7 +3,7 @@ package com.assingment.scalableweb.datatransferobject;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Returns the comparison result of {@code JsonDataDO} from {@code DiffController}.
+ * Returns the comparison result of {@link JsonDataDO} from {@link DiffController}.
  *
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
  */

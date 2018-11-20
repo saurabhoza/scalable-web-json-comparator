@@ -12,7 +12,7 @@ import com.assingment.scalableweb.validation.Base64Validation;
 
 /**
  * This class validates the String in Base 64 format for annotation
- * {@code Base64Validation}.
+ * {@link Base64Validation}.
  * 
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
  */

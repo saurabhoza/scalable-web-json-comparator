@@ -17,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class ScalableWebApplicationConfiguration {
 
 	/**
-	 * Creates a {@code Docket} object for Swagger 2
+	 * Creates a {@link Docket} object for Swagger 2
 	 * @return
 	 */
 	@Bean

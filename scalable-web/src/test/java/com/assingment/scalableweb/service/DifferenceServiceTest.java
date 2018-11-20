@@ -29,7 +29,7 @@ import com.assingment.scalableweb.exception.ResourceNotFoundException;
 import com.assingment.scalableweb.repository.JsonDataRepository;
 
 /**
- * This class contains the unit test cases of {@code DifferenceService}
+ * This class contains the unit test cases of {@link DifferenceService}
  * 
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
  */
