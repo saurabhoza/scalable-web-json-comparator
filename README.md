@@ -18,17 +18,17 @@
 The input will be a JSON format which will contain a Base64 encoded string. Below are sample Request and Response body :
 
 ##### Request Body:
-
+````
 {
-      &quot;data&quot;: &quot;dGVzdGluZyB0aGUgYmFzZTY0&quot;
+      "data" : "dGVzdGluZyB0aGUgYmFzZTY0"
 }
-
+````
 ##### Response Body:
-
+````
 {
-       &quot;message&quot;: &quot;Json Data on the Left side saved successfully&quot;
+       "message" : "Json Data on the Left side saved successfully"
 }
-
+````
 ### **2. What are we going to do with the ID?**
 
 We will save the ID and its corresponding left and right side into database. When client will call the <host>/v1/diff/<ID>, We will use the same id to retrieve the left and right side of data from the database and return the result.
@@ -48,6 +48,25 @@ We will save the ID and its corresponding left and right side into database. Whe
 Before being able to build he code you need:
 - Maven 3.3+
 - Java 1.8
+
+# **How to run Unit Test and Integration Test?**
+
+After you have installed Building requirements tool:
+````sh
+cd scalable-web-json-comparator/scalable-web
+mvn test
+````
+
+# **How to generate Java Docs?**
+
+````sh
+cd scalable-web-json-comparator/scalable-web
+mvn javadoc:javadoc
+````
+This will create java docs at below location : 
+````sh
+cd scalable-web-json-comparator/scalable-web/target/site/apidocs/
+````
 
 # **How to run code locally?**
 ````
@@ -103,14 +122,6 @@ curl -X GET --header 'Accept: application/json' 'http://localhost:8080/v1/diff/1
   "message": "Left and Right side of Json data is equal."
 }
 ````
-# **How to run Unit Test and Integration Test**
-
-After you have installed Building requirements tool:
-````sh
-cd scalable-web-json-comparator/scalable-web
-mvn test
-````
-
 
 # **Rest Documentation with Swagger**
 
@@ -128,8 +139,8 @@ http://localhost:8080/swagger-ui.html - UI representation of rest documentation
 
 3. Project is built with no Sonar issues.
 
-## **Suggestions for improvement**
+# **Suggestions for improvement**
 
 - **Dockerizing**  would be nice, it allows us to test our application across to multiple instances.
 - **Distributed Cache(Redis)** would need if we run application across to multiple instances.
-- **Authentication** would be nice too.
+- **Authentication** will restrict unauthorizes access to this API.
