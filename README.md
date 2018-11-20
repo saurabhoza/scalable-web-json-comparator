@@ -135,9 +135,8 @@ http://localhost:8080/swagger-ui.html - UI representation of rest documentation
 
 1. Solution was created;
 2. Unit tests and Integration tests were created with 97% of code coverage. Code coverage path : [https://github.com/saurabhoza/scalable-web-json-comparator/blob/master/Documents/code-coverage-reports/index.html](https://github.com/saurabhoza/scalable-web-json-comparator/blob/master/Documents/code-coverage-reports/index.html)
-
-
-3. Project is built with no Sonar issues.
+3. Project is built with zero bugs and Vulnerabilities in Sonar. 
+Sonar Dashboard : https://sonarcloud.io/dashboard?id=scalable-project
 
 # **Suggestions for improvement**
 
