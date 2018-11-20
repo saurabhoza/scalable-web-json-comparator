@@ -3,7 +3,7 @@ package com.assingment.scalableweb.exception;
 import com.assingment.scalableweb.enums.Side;
 
 /**
- * Exception occurs when one or two sides of {@code JsonDataDO} is empty or null 
+ * Exception occurs when one or two sides of {@code JsonDataDOO} is empty or null 
  * 
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>
  */

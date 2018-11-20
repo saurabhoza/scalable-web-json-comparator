@@ -18,7 +18,7 @@ public class ScalableWebApplicationConfiguration {
 
 	/**
 	 * Creates a {@link Docket} object for Swagger 2
-	 * @return
+	 * @return {@link Docket} object for Swagger 2
 	 */
 	@Bean
     public Docket api() { 

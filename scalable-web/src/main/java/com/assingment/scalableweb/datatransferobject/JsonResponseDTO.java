@@ -1,9 +1,12 @@
 package com.assingment.scalableweb.datatransferobject;
 
+import com.assingment.scalableweb.controller.DifferenceController;
+import com.assingment.scalableweb.domainobject.JsonDataDO;
+
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Returns the comparison result of {@link JsonDataDO} from {@link DiffController}.
+ * Returns the comparison result of {@link JsonDataDO} from {@link DifferenceController}.
  *
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
  */

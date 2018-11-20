@@ -2,12 +2,13 @@ package com.assingment.scalableweb.datatransferobject;
 
 import javax.validation.constraints.NotEmpty;
 
+import com.assingment.scalableweb.controller.DifferenceController;
 import com.assingment.scalableweb.validation.Base64Validation;
 
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Receives the Base 64 format JSON data from request in {@link DiffController}.
+ * Receives the Base 64 format JSON data from request in {@link DifferenceController}.
  *
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
  */

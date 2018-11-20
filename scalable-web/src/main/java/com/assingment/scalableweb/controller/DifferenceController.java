@@ -19,8 +19,6 @@ import com.assingment.scalableweb.datatransferobject.JsonRequestDTO;
 import com.assingment.scalableweb.datatransferobject.JsonResponseDTO;
 import com.assingment.scalableweb.enums.Side;
 import com.assingment.scalableweb.service.DifferenceService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

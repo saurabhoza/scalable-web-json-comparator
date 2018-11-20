@@ -5,8 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +23,9 @@ import com.assingment.scalableweb.exception.ResourceNotFoundException;
  * Handles the Exception and converts to {@link ErrorDetail} format.
  * 
  * This is a convenient base class for
- * {@link ControllerAdvice @ControllerAdvice} classes that provides a
- * centralized exception handling across all {@link @RequestMapping} methods
- * through {@link @ExceptionHandler} methods and coverts them into
+ * {@link ControllerAdvice} classes that provides a
+ * centralized exception handling across all RequestMapping methods
+ * through {@link ExceptionHandler} methods and converts them into
  * {@link ErrorDetail} format.
  *
  * @author <a href="mailto:saurabh.s.oza@gmail.com">Saurabh Oza</a>.
@@ -48,7 +46,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	 *            the exception
 	 * @param request
 	 *            the current request
-	 * @return @return a {@link ResponseEntity} instance with
+	 * @return a {@link ResponseEntity} instance with
 	 *         {@link ErrorDetail} and {@link HttpStatus}
 	 */
 	@ExceptionHandler(ResourceNotFoundException.class)
